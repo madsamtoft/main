@@ -40,9 +40,9 @@
 typedef struct {
     float airTmp;
     float airHum;
-    int soilHum;
+    short soilHum;
     float soilTmp;
-    int lightVal;
+    short lightVal;
 } Info;
 
 static SSD1306_t dev;
