@@ -44,7 +44,5 @@ typedef struct {
 static SSD1306_t dev;
 
 void i2cConfig();
-void updateInfo(Info *info);
-void periodicRead(int time);
 
 #endif
