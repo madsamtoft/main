@@ -25,10 +25,10 @@ void displayMenu(int select) { // Method to display the menu
 
 void displayMenuAverage(int select) {
     ssd1306_display_text(&dev, 1, "Get avg. over:", 14, false);
-    ssd1306_display_text(&dev, 2, "-5 minutes", 10, (select == 0));
-    ssd1306_display_text(&dev, 3, "-30 minutes", 11, (select == 1));
-    ssd1306_display_text(&dev, 4, "-1 hour", 7, (select == 2));
-    ssd1306_display_text(&dev, 5, "-2 hours", 8, (select == 3));
+    ssd1306_display_text(&dev, 2, "-5 seconds", 10, (select == 0));
+    ssd1306_display_text(&dev, 3, "-1 minute", 11, (select == 1));
+    ssd1306_display_text(&dev, 4, "-5 minutes", 7, (select == 2));
+    ssd1306_display_text(&dev, 5, "-1 hour", 8, (select == 3));
 }
 
 void displayInfo(Info *info) { // Method to display current info values
@@ -92,22 +92,24 @@ void averageSelect() {
     int select = 0;
     while (1) {
         displayMenuAverage(select);
-        if (btnPressed) {
-            btnPressed = 0;
+        if (gpio_get_level(GPIO_BTN_ENTER) == 0) {
+            // btnPressed = 0;
             clearScreen(dev);
-            if (select == 0) {
+            switch (select) {
+            case AVERAGE_5SEC:
                 periodicRead(5);
-                return;
-            } else if (select == 1) {
-                periodicRead(1800);
-                return;
-            } else if (select == 2) {
-                return;
-                periodicRead(3600);
-            } else if (select == 3) {
-                periodicRead(7200);
-                return;
+                break;
+            case AVERAGE_1MIN:
+                periodicRead(60);
+                break;
+            case AVERAGE_5MIN:
+                periodicRead(300);
+                break;
+            case AVERAGE_1HOUR:
+                periodicRead(6000);
+                break;
             }
+            return;
         }
         if (gpio_get_level(GPIO_BTN_SELECT) == 0) {
             select++;
