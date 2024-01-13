@@ -1,7 +1,27 @@
 #include "gpio.h"
+#include "buzzer.h"
 
-void interruptHandler() {
-    btnPressed = 1;
+void interruptEnter(void *arg) {
+    xTaskCreate(sfx_2, "sfx_2", 1000, NULL, 1, NULL);
+    btnEnt = 1;
+}
+
+void interruptSelect(void *arg) {
+    xTaskCreate(sfx_1, "sfx_2", 1000, NULL, 1, NULL);
+    btnSel = 1;
+}
+
+int getEnt() {
+    return btnEnt;
+}
+
+int getSel() {
+    return btnSel;
+}
+
+void resetBtns() {
+    btnEnt = 0;
+    btnSel = 0;
 }
 
 void initButtons() { // Configure buttons
@@ -12,8 +32,10 @@ void initButtons() { // Configure buttons
     gpio_set_direction(GPIO_BTN_SELECT, GPIO_MODE_INPUT);
     gpio_pullup_en(GPIO_BTN_ENTER); // Enable pull-up resistor
     gpio_pullup_en(GPIO_BTN_SELECT);
-    gpio_set_intr_type(GPIO_BTN_ENTER, GPIO_INTR_POSEDGE); // Set interrupt on positive edge
-    gpio_isr_handler_add(GPIO_BTN_ENTER, interruptHandler, NULL); // Add handler for button interrupt
+    gpio_set_intr_type(GPIO_BTN_ENTER, GPIO_INTR_LOW_LEVEL); // Set interrupt on positive edge
+    gpio_set_intr_type(GPIO_BTN_SELECT, GPIO_INTR_LOW_LEVEL);
+    gpio_isr_handler_add(GPIO_BTN_ENTER, interruptEnter, NULL); // Add handler for button interrupt
+    gpio_isr_handler_add(GPIO_BTN_SELECT, interruptSelect, NULL);
 }
 
 void initLEDs() { // Configure LEDs
