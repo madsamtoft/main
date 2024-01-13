@@ -27,7 +27,7 @@ void app_main(void) {
         }
         updateInfo(&current);
         printInfo(&current);
-        displayInfo(&current);
+        displayScreen(&current);
         vTaskDelay(DELAY(735)); // The time it takes to execute one iteration is 265ms
     }
 }
