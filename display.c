@@ -26,9 +26,9 @@ void displayMenu(int select) { // Method to display the menu
 void displayMenuAverage(int select) {
     ssd1306_display_text(&dev, 1, "Get avg. over:", 14, false);
     ssd1306_display_text(&dev, 2, "-5 seconds", 10, (select == 0));
-    ssd1306_display_text(&dev, 3, "-1 minute", 11, (select == 1));
-    ssd1306_display_text(&dev, 4, "-5 minutes", 7, (select == 2));
-    ssd1306_display_text(&dev, 5, "-1 hour", 8, (select == 3));
+    ssd1306_display_text(&dev, 3, "-1 minute", 9, (select == 1));
+    ssd1306_display_text(&dev, 4, "-5 minutes", 10, (select == 2));
+    ssd1306_display_text(&dev, 5, "-1 hour", 7, (select == 3));
 }
 
 void displayInfo(Info *info) { // Method to display current info values
@@ -60,11 +60,8 @@ void displaySoilInfo(Info *info) {
     sprintf(soilTemp,       "Soil tmp: %5.1fC", info -> soilTmp);
     sprintf(soilHumidity,   "Soil hum: %6d", info -> soilHum);
     ssd1306_display_text(&dev, 1, "Soil info:", 10, false);
-    // ssd1306_display_text(&dev, 2, airTemp, 16, false);
     ssd1306_display_text(&dev, 2, soilTemp, 16, false);
-    // ssd1306_display_text(&dev, 4, airHumidity, 16, false);
     ssd1306_display_text(&dev, 3, soilHumidity, 16, false);
-    // ssd1306_display_text(&dev, 6, lightLevel, 16, false);
 }
 
 void displayAirInfo(Info *info) {
@@ -74,10 +71,7 @@ void displayAirInfo(Info *info) {
     sprintf(airHumidity,    "Air  hum: %5.1f%%", info -> airHum);
     ssd1306_display_text(&dev, 1, "Air info:", 9, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, false);
-    // ssd1306_display_text(&dev, 3, soilTemp, 16, false);
     ssd1306_display_text(&dev, 3, airHumidity, 16, false);
-    // ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
-    // ssd1306_display_text(&dev, 6, lightLevel, 16, false);
 }
 
 void displayLightInfo(Info *info) {
