@@ -18,7 +18,9 @@ void app_main(void) {
 
     Info current;
     initDisplay();
-    melody_load();
+
+    //Boot melody
+    xTaskCreate(melody_load, "melody_load", 1000, NULL, 1, NULL);
 
     while (1) {
         if (gpio_get_level(GPIO_BTN_ENTER) == 0) {

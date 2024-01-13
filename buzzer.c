@@ -66,6 +66,7 @@ void melody_load() {
     for (int i = 0; i < length; i ++) {
         play_note(notes[i],octaves[i],lengths[i]/4);
     }
+    vTaskDelete(NULL);
 }
 
 void melody_amogus() {
@@ -77,6 +78,7 @@ void melody_amogus() {
     for (int i = 0; i < length; i ++) {
         play_note(notes[i],octaves[i],lengths[i]/4);
     }
+    vTaskDelete(NULL);
 }
 
 void melody_error() {
@@ -91,17 +93,21 @@ void melody_error() {
             play_note(notes[i],octaves[i],lengths[i]/4);
         }
     }
+    vTaskDelete(NULL);
 }
 
 void sfx_1() {
-    play_note(C,4,2);
+    play_note(C,4,0.25);
+    vTaskDelete(NULL);
 }
 
 void sfx_2() {
-    play_note(G,3,2);
+    play_note(G,3,0.5);
+    vTaskDelete(NULL);
 }
 
 void sfx_3() {
-    play_note(G,3,1);
-    play_note(C,4,1);
+    play_note(G,3,0.5);
+    play_note(C,4,0.5);
+    vTaskDelete(NULL);
 }
