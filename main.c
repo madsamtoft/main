@@ -5,6 +5,7 @@
 #include "light_sensor.h"
 #include "display.h"
 #include "console.h"
+#include "buzzer.h"
 
 
 void app_main(void) {
@@ -12,9 +13,12 @@ void app_main(void) {
     initSoil();
     initLight();
     buttonConfig();
+    initBuzzer();
 
     Info current;
     initDisplay();
+
+    melody_load();
 
     while (1) {
         if (gpio_get_level(GPIO_BTN_ENTER) == 0) {
