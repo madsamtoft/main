@@ -27,11 +27,12 @@ void updateInfo(Info *info) {
 void periodicRead(int time) { // Read and get average over a period of time
     printf("Reading data for %d seconds:\n", time);
     Info *data = (Info *) malloc(sizeof(Info) * time);
+    TickType_t startTimeTicks = xTaskGetTickCount();
     for (int i = 0; i < time; i++) {
         updateInfo(&(data[i]));
         printInfo(&(data[i]));
         displayInfo(&(data[i]));
-        vTaskDelay(DELAY(735)); // The time it takes to execute one iteration is 265ms so this is 1 read per second
+        vTaskDelayUntil(&startTimeTicks, DELAY(1000));
     }
     printData(data, time);
     free(data); // Maybe needs to be moved if we want to use the array more
