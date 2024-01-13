@@ -5,17 +5,17 @@
 #include "config.h"
 
 enum screen {
-    OVERVIEW,       // 0
-    AVERAGE_MENU,   // 1
-    SOIL_SENSOR,    // 2
-    AIR_SENSOR,     // 3
-    LIGHT_SENSOR,   // 4
+    OVERVIEW,           // 0
+    EXPERIMENT_MENU,    // 1
+    SOIL_SENSOR,        // 2
+    AIR_SENSOR,         // 3
+    LIGHT_SENSOR,       // 4
 };
-enum averages {
-    AVERAGE_5SEC,    // 0
-    AVERAGE_1MIN,   // 1
-    AVERAGE_5MIN,   // 2
-    AVERAGE_1HOUR  // 3
+enum experiment {
+    EXP_5SEC,   // 0
+    EXP_1MIN,   // 1
+    EXP_5MIN,   // 2
+    EXP_1HOUR   // 3
 };
 
 static char currentDisplay = OVERVIEW;
