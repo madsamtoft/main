@@ -1,4 +1,5 @@
 #include "display.h"
+#include "gpio.h"
 
 void initDisplay() {
     i2c_master_shared_i2c_init(&dev);

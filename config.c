@@ -17,3 +17,22 @@ void i2cConfig() {
     i2c_param_config(I2C_NUM, &conf);
     ESP_ERROR_CHECK(i2c_driver_install(I2C_NUM, conf.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0));
 }
+
+void updateInfo(Info *info) {
+    updateAir(info);
+    updateSoil(info);
+    updateLight(info);
+}
+
+void periodicRead(int time) { // Read and get average over a period of time
+    printf("Reading data for %d seconds:\n", time);
+    Info *data = (Info *) malloc(sizeof(Info) * time);
+    for (int i = 0; i < time; i++) {
+        updateInfo(&(data[i]));
+        printInfo(&(data[i]));
+        displayInfo(&(data[i]));
+        vTaskDelay(DELAY(735)); // The time it takes to execute one iteration is 265ms so this is 1 read per second
+    }
+    printData(data, time);
+    free(data); // Maybe needs to be moved if we want to use the array more
+}
