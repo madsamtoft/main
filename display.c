@@ -60,7 +60,7 @@ void averageSelect() {
         if (gpio_get_level(GPIO_BTN_ENTER) == 0) {
             clearScreen(dev);
             if (select == 0) {
-                periodicRead(300);
+                periodicRead(5);
                 return;
             } else if (select == 1) {
                 periodicRead(1800);
