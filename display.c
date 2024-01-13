@@ -34,18 +34,18 @@ void displayInfo(Info *info) { // Method to display current info values
     char soilTemp[17];
     char airHumidity[17];
     char soilHumidity[17];
-    sprintf(airTemp, "Air: %10.1fC", info -> airTmp);
-    sprintf(soilTemp, "Soil: %9.1fC", info -> soilTmp);
-    sprintf(airHumidity, "Air: %10.1f%%", info -> airHum);
-    sprintf(soilHumidity, "Soil: %10d", info -> soilHum);
-
-    ssd1306_display_text(&dev, 1, "Overview:", 9, false);
-    ssd1306_display_text(&dev, 2, "Temperature", 12, false);
-    ssd1306_display_text(&dev, 3, airTemp, 16, false);
-    ssd1306_display_text(&dev, 4, soilTemp, 16, false);
-    ssd1306_display_text(&dev, 5, "Humidity", 9, false);
-    ssd1306_display_text(&dev, 6, airHumidity, 16, false);
-    ssd1306_display_text(&dev, 7, soilHumidity, 16, false);
+    char lightLevel[17];
+    sprintf(airTemp,        "Air  tmp: %5.1fC", info -> airTmp);
+    sprintf(soilTemp,       "Soil tmp: %5.1fC", info -> soilTmp);
+    sprintf(airHumidity,    "Air  hum: %5.1f%%", info -> airHum);
+    sprintf(soilHumidity,   "Soil hum: %6d", info -> soilHum);
+    sprintf(lightLevel,     "Lght lvl: %6d", info -> lightVal);
+    ssd1306_display_text(&dev, 1, "Overview", 8, false);
+    ssd1306_display_text(&dev, 2, airTemp, 16, false);
+    ssd1306_display_text(&dev, 3, soilTemp, 16, false);
+    ssd1306_display_text(&dev, 4, airHumidity, 16, false);
+    ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
+    ssd1306_display_text(&dev, 6, lightLevel, 16, false);
 }
 
 void displayAverage(Info *info) {
