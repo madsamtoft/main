@@ -109,6 +109,7 @@ void averageSelect() {
                 periodicRead(6000);
                 break;
             }
+            currentDisplay = OVERVIEW;
             return;
         }
         if (gpio_get_level(GPIO_BTN_SELECT) == 0) {

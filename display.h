@@ -10,11 +10,12 @@ enum screen {
     SOIL_SENSOR,    // 2
     AIR_SENSOR,     // 3
     LIGHT_SENSOR,   // 4
-
-    AVERAGE_5SEC,    // 5
-    AVERAGE_1MIN,   // 6
-    AVERAGE_5MIN,   // 7
-    AVERAGE_1HOUR  // 8
+};
+enum averages {
+    AVERAGE_5SEC,    // 0
+    AVERAGE_1MIN,   // 1
+    AVERAGE_5MIN,   // 2
+    AVERAGE_1HOUR  // 3
 };
 
 static char currentDisplay = OVERVIEW;
