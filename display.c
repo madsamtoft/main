@@ -75,8 +75,7 @@ void averageSelect() {
                 return;
             }
         }
-        if (btnPressed) {
-            btnPressed = 0;
+        if (gpio_get_level(GPIO_BTN_SELECT) == 0) {
             select++;
             select %= 4;
             vTaskDelay(DELAY(100));
@@ -111,7 +110,7 @@ void menuSelect() {
             }
             return;
         }
-        if (btnPressed) {
+        if (gpio_get_level(GPIO_BTN_SELECT) == 0) {
             btnPressed = 0;
             select++;
             select %= 5;
