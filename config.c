@@ -1,4 +1,5 @@
 #include "config.h"
+#include "gpio.h"
 #include "display.h"
 #include "console.h"
 #include "air_sensor.h"
@@ -25,10 +26,14 @@ void updateInfo(Info *info) {
 }
 
 void periodicRead(int time) { // Read and get average over a period of time
+    gpio_set_level(GPIO_LED_GREEN, 0);
+    int level = 1;
     printf("Reading data for %d seconds:\n", time);
     Info *data = (Info *) malloc(sizeof(Info) * time);
     TickType_t startTimeTicks = xTaskGetTickCount();
     for (int i = 0; i < time; i++) {
+        gpio_set_level(GPIO_LED_RED, level);
+        level = !level;
         updateInfo(&(data[i]));
         printInfo(&(data[i]));
         displayInfo(&(data[i]));
@@ -36,4 +41,6 @@ void periodicRead(int time) { // Read and get average over a period of time
     }
     printData(data, time);
     free(data); // Maybe needs to be moved if we want to use the array more
+    gpio_set_level(GPIO_LED_RED, 0);
+    gpio_set_level(GPIO_LED_GREEN, 1);
 }
