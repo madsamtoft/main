@@ -27,22 +27,37 @@ void updateInfo(Info *info) {
 }
 
 void periodicRead(int time) { // Read and get average over a period of time
+    printf("Reading data for %d seconds:\n", time);
+
+    // LED's
     gpio_set_level(GPIO_LED_GREEN, 0);
     int level = 1;
-    printf("Reading data for %d seconds:\n", time);
+
+    // Prepare Array
     Info *data = (Info *) malloc(sizeof(Info) * time);
+
+    // Task Handling
     TickType_t startTimeTicks = xTaskGetTickCount();
     for (int i = 0; i < time; i++) {
+        // LED's
         gpio_set_level(GPIO_LED_RED, level);
         level = !level;
+
+        // INFO
         updateInfo(&(data[i]));
-        printInfo(&(data[i]));
+        //printInfo(&(data[i]));
         displayInfo(&(data[i]));
+
+        // Task Handling
         vTaskDelayUntil(&startTimeTicks, DELAY(1000));
     }
-    printData(data, time);
+    //printData(data, time);
     free(data); // Maybe needs to be moved if we want to use the array more
+    
+    // LED's
     gpio_set_level(GPIO_LED_RED, 0);
     gpio_set_level(GPIO_LED_GREEN, 1);
+
+    // Sound Effect
     xTaskCreate(sfx_3, "sfx_3", 1000, NULL, 1, NULL);
 }
