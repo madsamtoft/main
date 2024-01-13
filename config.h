@@ -23,10 +23,6 @@
 #include "ssd1306.h"
 //#include "font8x8_basic.h"
 
-//Define GPIO pins
-#define GPIO_BTN_ENTER 18
-#define GPIO_BTN_SELECT 19
-
 #define I2C_MASTER_FREQ_HZ 75000 //Reduce it to 50000 if the temperature/umidity sensor fails
 #define I2C_MASTER_TX_BUF_DISABLE 0
 #define I2C_MASTER_RX_BUF_DISABLE 0
@@ -47,7 +43,6 @@ typedef struct {
 
 static SSD1306_t dev;
 
-void buttonConfig();
 void i2cConfig();
 void updateInfo(Info *info);
 void periodicRead(int time);
