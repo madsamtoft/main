@@ -1,6 +1,6 @@
 #include "display.h"
 #include "gpio.h"
-#include "buffer.h"
+#include "buzzer.h"
 
 void initDisplay() {
     i2c_master_shared_i2c_init(&dev);

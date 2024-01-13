@@ -5,6 +5,7 @@
 #include "air_sensor.h"
 #include "soil_sensor.h"
 #include "light_sensor.h"
+#include "buzzer.h"
 
 void i2cConfig() {
     i2c_config_t conf;
