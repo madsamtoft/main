@@ -24,8 +24,12 @@ void displayMenu(int select);
 void displayMenuAverage(int select);
 void displayInfo(Info *info);
 void displayAverage(Info *info);
+void displaySoilInfo(Info *info);
+void displayAirInfo(Info *info);
+void displayLightInfo(Info *info);
 void averageSelect();
 void menuSelect();
 void displayScreen(Info *info);
+
 
 #endif

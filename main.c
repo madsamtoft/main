@@ -21,8 +21,8 @@ void app_main(void) {
     melody_load();
 
     while (1) {
-        if (btnPressed) {
-            btnPressed = 0;
+        if (gpio_get_level(GPIO_BTN_ENTER) == 0) {
+            // btnPressed = 0;
             clearScreen();
             menuSelect();
         }

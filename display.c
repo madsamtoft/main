@@ -42,7 +42,7 @@ void displayInfo(Info *info) { // Method to display current info values
     sprintf(airHumidity,    "Air  hum: %5.1f%%", info -> airHum);
     sprintf(soilHumidity,   "Soil hum: %6d", info -> soilHum);
     sprintf(lightLevel,     "Lght lvl: %6d", info -> lightVal);
-    ssd1306_display_text(&dev, 1, "Overview", 8, false);
+    ssd1306_display_text(&dev, 1, "Overview:", 9, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, false);
     ssd1306_display_text(&dev, 3, soilTemp, 16, false);
     ssd1306_display_text(&dev, 4, airHumidity, 16, false);
@@ -53,6 +53,40 @@ void displayInfo(Info *info) { // Method to display current info values
 void displayAverage(Info *info) {
 
 }
+
+void displaySoilInfo(Info *info) {
+    char soilTemp[17];
+    char soilHumidity[17];
+    sprintf(soilTemp,       "Soil tmp: %5.1fC", info -> soilTmp);
+    sprintf(soilHumidity,   "Soil hum: %6d", info -> soilHum);
+    ssd1306_display_text(&dev, 1, "Soil info:", 10, false);
+    // ssd1306_display_text(&dev, 2, airTemp, 16, false);
+    ssd1306_display_text(&dev, 2, soilTemp, 16, false);
+    // ssd1306_display_text(&dev, 4, airHumidity, 16, false);
+    ssd1306_display_text(&dev, 3, soilHumidity, 16, false);
+    // ssd1306_display_text(&dev, 6, lightLevel, 16, false);
+}
+
+void displayAirInfo(Info *info) {
+    char airTemp[17];
+    char airHumidity[17];
+    sprintf(airTemp,        "Air  tmp: %5.1fC", info -> airTmp);
+    sprintf(airHumidity,    "Air  hum: %5.1f%%", info -> airHum);
+    ssd1306_display_text(&dev, 1, "Air info:", 9, false);
+    ssd1306_display_text(&dev, 2, airTemp, 16, false);
+    // ssd1306_display_text(&dev, 3, soilTemp, 16, false);
+    ssd1306_display_text(&dev, 3, airHumidity, 16, false);
+    // ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
+    // ssd1306_display_text(&dev, 6, lightLevel, 16, false);
+}
+
+void displayLightInfo(Info *info) {
+    char lightLevel[17];
+    sprintf(lightLevel,     "Lght lvl: %6d", info -> lightVal);
+    ssd1306_display_text(&dev, 1, "Light info:", 11, false);
+    ssd1306_display_text(&dev, 2, lightLevel, 16, false);
+}
+
 
 void averageSelect() {
     int select = 0;
@@ -89,24 +123,7 @@ void menuSelect() {
         displayMenu(select);
         if (gpio_get_level(GPIO_BTN_ENTER) == 0) {
             clearScreen();
-
-            switch (select) {
-            case OVERVIEW:
-                currentDisplay = OVERVIEW;
-                break;
-            case AVERAGE_MENU:
-                currentDisplay = AVERAGE_MENU;
-                break;
-            case SOIL_SENSOR:
-                currentDisplay = SOIL_SENSOR;
-                break;
-            case 3:
-                currentDisplay = AIR_SENSOR;
-                break;
-            case 4:
-                currentDisplay = LIGHT_SENSOR;
-                break;
-            }
+            currentDisplay = select;
             return;
         }
         if (gpio_get_level(GPIO_BTN_SELECT) == 0) {
@@ -125,14 +142,14 @@ void displayScreen(Info *info) {
     case AVERAGE_MENU:
         averageSelect();
         break;
-    // case SOIL_SENSOR:
-        displaySoilInfo();
+    case SOIL_SENSOR:
+        displaySoilInfo(info);
         break;
-    // case AIR_SENSOR:
-        displayAirInfo();
+    case AIR_SENSOR:
+        displayAirInfo(info);
         break;
-    // case LIGHT_SENSOR:
-        displayLightInfo();
+    case LIGHT_SENSOR:
+        displayLightInfo(info);
         break;
     default:
         displayInfo(info);
