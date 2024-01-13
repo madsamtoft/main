@@ -4,6 +4,20 @@
 //Own libraries
 #include "config.h"
 
+enum screen {
+    OVERVIEW,       // 0
+    AVERAGE_MENU,   // 1
+    SOIL_SENSOR,    // 2
+    AIR_SENSOR,     // 3
+    LIGHT_SENSOR,   // 4
+
+    AVERAGE_1MIN,   // 5
+    AVERAGE_5MIN,   // 6
+    AVERAGE_1HOUR   // 7
+}
+
+static char currentDisplay = OVERVIEW;
+
 void initDisplay();
 void clearScreen();
 void displayMenu(int select);
