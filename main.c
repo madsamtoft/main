@@ -12,12 +12,12 @@ void app_main(void) {
     i2cConfig();
     initSoil();
     initLight();
-    buttonConfig();
+    initButtons();
+    initLEDs();
     initBuzzer();
 
     Info current;
     initDisplay();
-
     melody_load();
 
     while (1) {
