@@ -9,6 +9,7 @@
 #define GPIO_LED_RED 8
 #define GPIO_LED_GREEN 7
 
+void interruptHandler(void *arg);
 void initButtons();
 void initLEDs();
 
