@@ -1,5 +1,6 @@
 #include "display.h"
 #include "gpio.h"
+#include "buffer.h"
 
 void initDisplay() {
     i2c_master_shared_i2c_init(&dev);
@@ -87,6 +88,7 @@ void menuSelect() {
         displayMenu(select);
         if (gpio_get_level(GPIO_BTN_ENTER) == 0) {
             clearScreen();
+            sfx_2();
 
             switch (select) {
             case 0:
@@ -108,6 +110,7 @@ void menuSelect() {
             return;
         }
         if (gpio_get_level(GPIO_BTN_SELECT) == 0) {
+            sfx_1();
             select++;
             select %= 5;
             vTaskDelay(DELAY(100));

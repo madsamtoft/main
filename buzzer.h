@@ -40,5 +40,6 @@ void melody_amogus();
 void melody_error();
 void sfx_1();
 void sfx_2();
+void sfx_3();
 
 #endif

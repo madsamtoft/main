@@ -100,3 +100,8 @@ void sfx_1() {
 void sfx_2() {
     play_note(G,3,2);
 }
+
+void sfx_3() {
+    play_note(G,3,1);
+    play_note(C,4,1);
+}

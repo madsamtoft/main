@@ -14,7 +14,7 @@ enum screen {
     AVERAGE_1MIN,   // 5
     AVERAGE_5MIN,   // 6
     AVERAGE_1HOUR   // 7
-}
+};
 
 static char currentDisplay = OVERVIEW;
 
