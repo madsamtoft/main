@@ -41,8 +41,6 @@ typedef struct {
     short lightVal;
 } Info;
 
-static int btn;
-
 static SSD1306_t dev;
 
 void i2cConfig();

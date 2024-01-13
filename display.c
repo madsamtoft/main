@@ -92,8 +92,8 @@ void averageSelect() {
     int select = 0;
     while (1) {
         displayMenuAverage(select);
-        if (gpio_get_level(GPIO_BTN_ENTER) == 0) {
-            // btnPressed = 0;
+        if (getEnt()) {
+            resetBtns();
             clearScreen(dev);
             switch (select) {
             case AVERAGE_5SEC:
@@ -112,7 +112,8 @@ void averageSelect() {
             currentDisplay = OVERVIEW;
             return;
         }
-        if (gpio_get_level(GPIO_BTN_SELECT) == 0) {
+        if (getSel()) {
+            resetBtns();
             select++;
             select %= 4;
             vTaskDelay(DELAY(100));
@@ -124,14 +125,14 @@ void menuSelect() {
     int select = OVERVIEW;
     while (1) {
         displayMenu(select);
-        if (gpio_get_level(GPIO_BTN_ENTER) == 0) {
+        if (getEnt()) {
+            resetBtns();
             clearScreen();
-            xTaskCreate(sfx_2, "sfx_2", 1000, NULL, 1, NULL);
             currentDisplay = select;
             return;
         }
-        if (gpio_get_level(GPIO_BTN_SELECT) == 0) {
-            xTaskCreate(sfx_1, "sfx_1", 1000, NULL, 1, NULL);
+        if (getSel()) {
+            resetBtns();
             select++;
             select %= 5;
             vTaskDelay(DELAY(100));
