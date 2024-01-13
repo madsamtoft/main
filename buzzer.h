@@ -38,5 +38,7 @@ void play_note(double note, double octave, double beats);
 void melody_load();
 void melody_amogus();
 void melody_error();
+void sfx_1();
+void sfx_2();
 
 #endif

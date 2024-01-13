@@ -92,3 +92,11 @@ void melody_error() {
         }
     }
 }
+
+void sfx_1() {
+    play_note(C,4,2);
+}
+
+void sfx_2() {
+    play_note(G,3,2);
+}
