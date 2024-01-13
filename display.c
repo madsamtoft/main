@@ -82,29 +82,58 @@ void averageSelect() {
 }
 
 void menuSelect() {
-    int select = 0;
+    int select = OVERVIEW;
     while (1) {
         displayMenu(select);
         if (gpio_get_level(GPIO_BTN_ENTER) == 0) {
             clearScreen();
-            if (select == 0) {
-                return;
-            } else if (select == 1) {
+
+            switch (select) {
+            case 0:
+                currentDisplay = OVERVIEW;
+                break;
+            case 1:
                 averageSelect();
-                return;
-            } else if (select == 2) {
-                return;
-            } else if (select == 3) {
-                return;
-            } else if (select == 4) {
-                return;
-            
+                break;
+            case 2:
+                currentDisplay = SOIL_SENSOR;
+                break;
+            case 3:
+                currentDisplay = AIR_SENSOR;
+                break;
+            case 4:
+                currentDisplay = LIGHT_SENSOR;
+                break;
             }
+            return;
         }
         if (gpio_get_level(GPIO_BTN_SELECT) == 0) {
             select++;
             select %= 5;
             vTaskDelay(DELAY(100));
         }
+    }
+}
+
+void displayScreen() {
+    switch (currentDisplay) {
+    case OVERVIEW:
+        displayInfo();
+        break;
+    case AVERAGE_MENU:
+        menuSelect();
+        break;
+    case SOIL_SENSOR:
+        // displaySoilInfo();
+        break;
+    case AIR_SENSOR:
+        // displayAirInfo();
+        break;
+    case LIGHT_SENSOR:
+        // displayLightInfo();
+        break;
+    default:
+        displayInfo();
+        break;
     }
 }
