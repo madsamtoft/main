@@ -9,7 +9,14 @@
 #define GPIO_LED_RED 8
 #define GPIO_LED_GREEN 7
 
-void interruptHandler(void *arg);
+static int btnEnt = 0;
+static int btnSel = 0;
+
+void interruptEnter(void *arg);
+void interruptSelect(void *arg);
+int getEnt();
+int getSel();
+void resetBtns();
 void initButtons();
 void initLEDs();
 
