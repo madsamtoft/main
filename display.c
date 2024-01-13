@@ -1,6 +1,7 @@
 #include "display.h"
 #include "gpio.h"
 #include "buzzer.h"
+#include "config.h"
 
 void initDisplay() {
     i2c_master_shared_i2c_init(&dev);
@@ -23,7 +24,7 @@ void displayMenu(int select) { // Method to display the menu
     ssd1306_display_text(&dev, 6, "Light Sensor", 12, (select == 4));
 }
 
-void displayMenuAverage(int select) {
+void displayMenuExperiment(int select) {
     ssd1306_display_text(&dev, 1, "Run exp. for:", 13, false);
     ssd1306_display_text(&dev, 2, " * 5 seconds", 12, (select == 0));
     ssd1306_display_text(&dev, 3, " * 1 minute", 11, (select == 1));
@@ -32,6 +33,9 @@ void displayMenuAverage(int select) {
 }
 
 void displayInfo(Info *info) { // Method to display current info values
+    bool airTempError = info -> airTmp > LOW_AIR_TMP && info -> airTmp < HIGH_AIR_TMP;
+    bool lightError = info -> lightVal > LOW_LIGHT;
+
     char airTemp[17];
     char soilTemp[17];
     char airHumidity[17];
@@ -43,11 +47,11 @@ void displayInfo(Info *info) { // Method to display current info values
     sprintf(soilHumidity,   "Soil hum: %6d", info -> soilHum);
     sprintf(lightLevel,     "Lght lvl: %6d", info -> lightVal);
     ssd1306_display_text(&dev, 1, "Overview:", 9, false);
-    ssd1306_display_text(&dev, 2, airTemp, 16, false);
+    ssd1306_display_text(&dev, 2, airTemp, 16, !airTempError);
     ssd1306_display_text(&dev, 3, soilTemp, 16, false);
     ssd1306_display_text(&dev, 4, airHumidity, 16, false);
     ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
-    ssd1306_display_text(&dev, 6, lightLevel, 16, false);
+    ssd1306_display_text(&dev, 6, lightLevel, 16, !lightError);
 }
 
 void displayAverage(Info *info) {
@@ -82,24 +86,24 @@ void displayLightInfo(Info *info) {
 }
 
 
-void averageSelect() {
+void experimentSelect() {
     int select = 0;
     while (1) {
-        displayMenuAverage(select);
+        displayMenuExperiment(select);
         if (getEnt()) {
             resetBtns();
             clearScreen(dev);
             switch (select) {
-            case AVERAGE_5SEC:
+            case EXP_5SEC:
                 periodicRead(5);
                 break;
-            case AVERAGE_1MIN:
+            case EXP_1MIN:
                 periodicRead(60);
                 break;
-            case AVERAGE_5MIN:
+            case EXP_5MIN:
                 periodicRead(300);
                 break;
-            case AVERAGE_1HOUR:
+            case EXP_1HOUR:
                 periodicRead(6000);
                 break;
             }
@@ -139,8 +143,8 @@ void displayScreen(Info *info) {
     case OVERVIEW:
         displayInfo(info);
         break;
-    case AVERAGE_MENU:
-        averageSelect();
+    case EXPERIMENT_MENU:
+        experimentSelect();
         break;
     case SOIL_SENSOR:
         displaySoilInfo(info);
