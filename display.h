@@ -26,5 +26,6 @@ void displayInfo(Info *info);
 void displayAverage(Info *info);
 void averageSelect();
 void menuSelect();
+void displayScreen(Info *info);
 
 #endif

@@ -58,7 +58,8 @@ void averageSelect() {
     int select = 0;
     while (1) {
         displayMenuAverage(select);
-        if (gpio_get_level(GPIO_BTN_ENTER) == 0) {
+        if (btnPressed) {
+            btnPressed = 0;
             clearScreen(dev);
             if (select == 0) {
                 periodicRead(5);
@@ -91,13 +92,13 @@ void menuSelect() {
             xTaskCreate(sfx_2, "sfx_2", 1000, NULL, 1, NULL);
 
             switch (select) {
-            case 0:
+            case OVERVIEW:
                 currentDisplay = OVERVIEW;
                 break;
-            case 1:
-                averageSelect();
+            case AVERAGE_MENU:
+                currentDisplay = AVERAGE_MENU;
                 break;
-            case 2:
+            case SOIL_SENSOR:
                 currentDisplay = SOIL_SENSOR;
                 break;
             case 3:
@@ -124,16 +125,16 @@ void displayScreen(Info *info) {
         displayInfo(info);
         break;
     case AVERAGE_MENU:
-        menuSelect();
+        averageSelect();
         break;
-    case SOIL_SENSOR:
-        // displaySoilInfo();
+    // case SOIL_SENSOR:
+        displaySoilInfo();
         break;
-    case AIR_SENSOR:
-        // displayAirInfo();
+    // case AIR_SENSOR:
+        displayAirInfo();
         break;
-    case LIGHT_SENSOR:
-        // displayLightInfo();
+    // case LIGHT_SENSOR:
+        displayLightInfo();
         break;
     default:
         displayInfo(info);

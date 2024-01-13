@@ -23,13 +23,14 @@ void app_main(void) {
     xTaskCreate(melody_load, "melody_load", 1000, NULL, 1, NULL);
 
     while (1) {
-        if (gpio_get_level(GPIO_BTN_ENTER) == 0) {
+        if (btnPressed) {
+            btnPressed = 0;
             clearScreen();
             menuSelect();
         }
         updateInfo(&current);
         printInfo(&current);
-        displayInfo(&current);
+        displayScreen(&current);
         vTaskDelay(DELAY(735)); // The time it takes to execute one iteration is 265ms
     }
 }
