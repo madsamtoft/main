@@ -17,18 +17,18 @@ void clearScreen() { // Method to clear the screen
 void displayMenu(int select) { // Method to display the menu
     ssd1306_display_text(&dev, 1, "Menu:", 5, false);
     ssd1306_display_text(&dev, 2, "Overview", 8, (select == 0));
-    ssd1306_display_text(&dev, 3, "Get Average", 11, (select == 1));
+    ssd1306_display_text(&dev, 3, "Run Experiment", 14, (select == 1));
     ssd1306_display_text(&dev, 4, "Soil Sensor", 11, (select == 2));
     ssd1306_display_text(&dev, 5, "Air Sensor", 10, (select == 3));
     ssd1306_display_text(&dev, 6, "Light Sensor", 12, (select == 4));
 }
 
 void displayMenuAverage(int select) {
-    ssd1306_display_text(&dev, 1, "Get avg. over:", 14, false);
-    ssd1306_display_text(&dev, 2, "-5 seconds", 10, (select == 0));
-    ssd1306_display_text(&dev, 3, "-1 minute", 9, (select == 1));
-    ssd1306_display_text(&dev, 4, "-5 minutes", 10, (select == 2));
-    ssd1306_display_text(&dev, 5, "-1 hour", 7, (select == 3));
+    ssd1306_display_text(&dev, 1, "Run exp. for:", 13, false);
+    ssd1306_display_text(&dev, 2, " * 5 seconds", 12, (select == 0));
+    ssd1306_display_text(&dev, 3, " * 1 minute", 11, (select == 1));
+    ssd1306_display_text(&dev, 4, " * 5 minutes", 12, (select == 2));
+    ssd1306_display_text(&dev, 5, " * 1 hour", 9, (select == 3));
 }
 
 void displayInfo(Info *info) { // Method to display current info values
