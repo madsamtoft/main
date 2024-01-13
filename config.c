@@ -44,5 +44,5 @@ void periodicRead(int time) { // Read and get average over a period of time
     free(data); // Maybe needs to be moved if we want to use the array more
     gpio_set_level(GPIO_LED_RED, 0);
     gpio_set_level(GPIO_LED_GREEN, 1);
-    sfx_3();
+    xTaskCreate(sfx_3, "sfx_3", 1000, NULL, 1, NULL);
 }
