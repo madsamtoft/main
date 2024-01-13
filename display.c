@@ -118,10 +118,10 @@ void menuSelect() {
     }
 }
 
-void displayScreen() {
+void displayScreen(Info *info) {
     switch (currentDisplay) {
     case OVERVIEW:
-        displayInfo();
+        displayInfo(info);
         break;
     case AVERAGE_MENU:
         menuSelect();
@@ -136,7 +136,7 @@ void displayScreen() {
         // displayLightInfo();
         break;
     default:
-        displayInfo();
+        displayInfo(info);
         break;
     }
 }
