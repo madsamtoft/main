@@ -39,19 +39,28 @@ void periodicRead(int time) { // Read and get average over a period of time
     // Task Handling
     TickType_t startTimeTicks = xTaskGetTickCount();
     for (int i = 0; i < time; i++) {
+        if (getEnt()) {
+            resetBtns();
+            if (exitSelect()) {
+                break;
+            } else {
+                startTimeTicks = xTaskGetTickCount();
+            }
+        }
+
         // LED's
         gpio_set_level(GPIO_LED_RED, level);
         level = !level;
 
         // INFO
         updateInfo(&(data[i]));
-        //printInfo(&(data[i]));
+        // printInfo(&(data[i]));
         displayInfo(&(data[i]));
 
         // Task Handling
         vTaskDelayUntil(&startTimeTicks, DELAY(1000));
     }
-    //printData(data, time);
+    printData(data, time);
     free(data); // Maybe needs to be moved if we want to use the array more
     
     // LED's

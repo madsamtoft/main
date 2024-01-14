@@ -54,7 +54,7 @@ void displayInfo(Info *info) { // Method to display current info values
     ssd1306_display_text(&dev, 6, lightLevel, 16, !lightError);
 }
 
-void displayAverage(Info *info) {
+void displayExperiment(Info *info) {
 
 }
 
@@ -83,6 +83,31 @@ void displayLightInfo(Info *info) {
     sprintf(lightLevel,     "Lght lvl: %6d", info -> lightVal);
     ssd1306_display_text(&dev, 1, "Light info:", 11, false);
     ssd1306_display_text(&dev, 2, lightLevel, 16, false);
+}
+
+void displayExit(int select) {
+    ssd1306_display_text(&dev, 1, "Exit experiment?", 16, false);
+    ssd1306_display_text(&dev, 2, " * Yes", 6, select == 0);
+    ssd1306_display_text(&dev, 3, " * No", 5, select == 1);
+}
+
+int exitSelect() {
+    clearScreen(dev);
+    int select = 0;
+    while (1) {
+        displayExit(select);
+        if (getEnt()) {
+            clearScreen(dev);
+            resetBtns();
+            return !select;
+        }
+        if (getSel()) {
+            resetBtns();
+            select++;
+            select %= 2;
+            vTaskDelay(DELAY(100));
+        }
+    }
 }
 
 

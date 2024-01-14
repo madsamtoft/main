@@ -38,15 +38,18 @@ static char currentDisplay = OVERVIEW;
 void initDisplay();
 void clearScreen();
 void displayMenu(int select);
-void displayMenuAverage(int select);
+void displayMenuExperiment(int select);
 void displayInfo(Info *info);
-void displayAverage(Info *info);
+void displayExperiment(Info *info);
 void displaySoilInfo(Info *info);
 void displayAirInfo(Info *info);
 void displayLightInfo(Info *info);
-void averageSelect();
+void displayExit();
+int exitSelect();
+void experimentSelect();
 void menuSelect();
 void displayScreen(Info *info);
+
 
 
 #endif
