@@ -34,6 +34,12 @@ enum experiment {
 };
 
 static char currentDisplay = OVERVIEW;
+static bool airTmpError = false;
+static bool soilTmpError = false;
+static bool airHumError = false;
+static bool soilHumError = false;
+static bool lightError = false;
+
 
 void initDisplay();
 void clearScreen();

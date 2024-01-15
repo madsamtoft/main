@@ -33,8 +33,12 @@ void displayMenuExperiment(int select) {
 }
 
 void displayInfo(Info *info) { // Method to display current info values
-    bool airTempError = info -> airTmp > LOW_AIR_TMP && info -> airTmp < HIGH_AIR_TMP;
-    bool lightError = info -> lightVal > LOW_LIGHT;
+    airTmpError = airTmpError ? false : info -> airTmp < LOW_AIR_TMP || info -> airTmp > HIGH_AIR_TMP;
+    soilTmpError = soilTmpError ? false : info -> soilTmp < LOW_SOIL_TMP || info -> soilTmp > HIGH_SOIL_TMP;
+    airHumError = airHumError ? false : info -> airHum < LOW_AIR_HUM || info -> airHum > HIGH_AIR_HUM;
+    soilHumError = soilHumError ? false : info -> soilHum < LOW_SOIL_HUM || info -> soilHum > HIGH_SOIL_HUM;
+    lightError = lightError ? false : info -> lightVal < LOW_LIGHT;
+
 
     char airTemp[17];
     char soilTemp[17];
@@ -47,15 +51,15 @@ void displayInfo(Info *info) { // Method to display current info values
     sprintf(soilHumidity,   "Soil hum: %6d", info -> soilHum);
     sprintf(lightLevel,     "Lght lvl: %6d", info -> lightVal);
     ssd1306_display_text(&dev, 1, "Overview:", 9, false);
-    ssd1306_display_text(&dev, 2, airTemp, 16, !airTempError);
-    ssd1306_display_text(&dev, 3, soilTemp, 16, false);
-    ssd1306_display_text(&dev, 4, airHumidity, 16, false);
-    ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
-    ssd1306_display_text(&dev, 6, lightLevel, 16, !lightError);
+    ssd1306_display_text(&dev, 2, airTemp, 16, airTmpError);
+    ssd1306_display_text(&dev, 3, soilTemp, 16, soilTmpError);
+    ssd1306_display_text(&dev, 4, airHumidity, 16, airHumError);
+    ssd1306_display_text(&dev, 5, soilHumidity, 16, soilHumError);
+    ssd1306_display_text(&dev, 6, lightLevel, 16, lightError);
 }
 
 void displayExperiment(Info *info) {
-
+    
 }
 
 void displaySoilInfo(Info *info) {
