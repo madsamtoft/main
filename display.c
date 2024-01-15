@@ -159,7 +159,7 @@ void displayExperimentMin(Info *data, int size) {
     sprintf(soilHumidity,   "Soil hum: %6.1f", soilHum);
     sprintf(lightLevel,     "Lght lvl: %6.1f", lightVal);
 
-    ssd1306_display_text(&dev, 1, "Minimum Values:", 15, true);
+    ssd1306_display_text(&dev, 1, "Minimum Values:", 15, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, false);
     ssd1306_display_text(&dev, 3, soilTemp, 16, false);
     ssd1306_display_text(&dev, 4, airHumidity, 16, false);
@@ -204,7 +204,7 @@ void displayExperimentMax(Info *data, int size) {
     sprintf(soilHumidity,   "Soil hum: %6.1f", soilHum);
     sprintf(lightLevel,     "Lght lvl: %6.1f", lightVal);
 
-    ssd1306_display_text(&dev, 1, "Maximum Values:", 15, true);
+    ssd1306_display_text(&dev, 1, "Maximum Values:", 15, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, false);
     ssd1306_display_text(&dev, 3, soilTemp, 16, false);
     ssd1306_display_text(&dev, 4, airHumidity, 16, false);

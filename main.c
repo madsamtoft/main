@@ -50,18 +50,6 @@ void updateInfoStat(Info *info, InfoStat *infoStat) {
     infoStat->count ++;
 }
 
-void experimentResults(Info data[], int size) {
-    clearScreen(dev);
-    while (1) {
-        displayExpResults(data, size);
-
-        if (getEnt()) {
-            resetBtns();
-            break;
-        }
-    }
-}
-
 void periodicRead(int time) { // Read and get average over a period of time
     printf("Reading data for %d seconds:\n", time);
 
@@ -115,11 +103,15 @@ void periodicRead(int time) { // Read and get average over a period of time
 }
 
 void appmain2() {
+    
+}
+
+void main() {
     Info current;
     InfoStat averages;
     averages.count = 0;
-    initDisplay();
 
+    vTaskDelay(DELAY(1000));
     //Boot melody
     xTaskCreate(melody_load, "melody_load", 1000, NULL, 1, NULL);
 
@@ -140,6 +132,7 @@ void appmain2() {
     }
 }
 
+
 void app_main(void) {
     i2cConfig();
     initSoil();
@@ -147,6 +140,8 @@ void app_main(void) {
     initButtons();
     initLEDs();
     initBuzzer();
+    initDisplay();
 
-    xTaskCreatePinnedToCore(&appmain2, "MainTask", 100000, NULL, 1, NULL, 0);
+    vTaskDelay(DELAY(1000));
+    xTaskCreatePinnedToCore(&main, "MainTask", 100000, NULL, 1, NULL, 0);    
 }
