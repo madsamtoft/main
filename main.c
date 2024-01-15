@@ -87,11 +87,6 @@ void periodicRead(int time) { // Read and get average over a period of time
         // Task Handling
         vTaskDelayUntil(&startTimeTicks, DELAY(1000));
     }
-    if(i == time - 1) {
-            displayExperiment(&(data[time - 1]), time, time);
-            printData(data, time);
-    }
-
     // LED's
     gpio_set_level(GPIO_LED_RED, 0);
     gpio_set_level(GPIO_LED_GREEN, 1);
@@ -99,7 +94,11 @@ void periodicRead(int time) { // Read and get average over a period of time
     // Sound Effect
     xTaskCreate(sfx_3, "sfx_3", 1000, NULL, 1, NULL);
 
-    experimentResultsSelect(data, time);
+    if(i == (time)) {
+        displayExperiment(&(data[time - 1]), time, time);
+        printData(data, time);
+        experimentResultsSelect(data, time);
+    }
     free(data); // Maybe needs to be moved if we want to use the array more
 }
 
