@@ -2,7 +2,7 @@
 #define LIGHT_SENSOR_H
 
 //Own libraries
-#include "config.h"
+#include "main.h"
 
 void initLight();
 void updateLight(Info *light);

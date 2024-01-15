@@ -2,7 +2,7 @@
 #define AIR_SENSOR_H
 
 //Own libraries
-#include "config.h"
+#include "main.h"
 
 void initAir();
 void updateAir(Info *air);

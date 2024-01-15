@@ -2,7 +2,7 @@
 #define CONSOLE_H
 
 //Own libraries
-#include "config.h"
+#include "main.h"
 
 void printInfo(Info *info);
 void printData(Info data[], int length);

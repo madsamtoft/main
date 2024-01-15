@@ -1,7 +1,7 @@
 #ifndef GPIO_H
 #define GPIO_H
 
-#include "config.h"
+#include "main.h"
 
 //Define GPIO pins
 #define GPIO_BTN_ENTER 18

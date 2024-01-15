@@ -1,7 +1,7 @@
 #ifndef BUZZER_H
 #define BUZZER_H
 
-#include "config.h"
+#include "main.h"
 
 // necessary libraries !
 #include <math.h>

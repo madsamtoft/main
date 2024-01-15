@@ -2,7 +2,7 @@
 #define SOIL_SENSOR_H
 
 //Own libraries
-#include "config.h"
+#include "main.h"
 
 void initSoil();
 void updateSoil(Info *soil);

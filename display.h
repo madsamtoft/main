@@ -2,7 +2,7 @@
 #define DISPLAY_H
 
 //Own libraries
-#include "config.h"
+#include "main.h"
 
 //Threshhold
 #define LOW_SOIL_HUM 670
