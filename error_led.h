@@ -18,6 +18,7 @@ void initRGB_LED();
 void setRGB(int r, int g, int b);
 void callRGB(int index);
 void setStatusBits(Info *info);
+void resetStatusBits();
 void blinkErrors();
 
 enum ErrorCodes {

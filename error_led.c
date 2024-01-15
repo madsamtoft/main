@@ -85,6 +85,10 @@ void setStatusBits(Info *info) {
     statusBits += (info -> lightVal < LOW_LIGHT) << ERROR_LIGHT_VAL;
 }
 
+void resetStatusBits() {
+    statusBits = 0;
+}
+
 void blinkErrors() {
     TickType_t startTimeTicks = xTaskGetTickCount();
     while (1) {
