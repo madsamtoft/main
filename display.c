@@ -62,7 +62,7 @@ void displayInfo(Info *info) { // Method to display current info values
 }
 
 void displayExperiment(Info *info, int expProg, int expTime) {
-    char experiment[20];
+    char experiment[23];
     char airTemp[17];
     char soilTemp[17];
     char airHumidity[17];
@@ -70,10 +70,10 @@ void displayExperiment(Info *info, int expProg, int expTime) {
     char lightLevel[17];
 
     short timeLeft = expTime - expProg;
-    short timeLeftMin = timeLeft/60;
-    short percent = (expProg*100 / expTime);
+    short timeLeftMin = timeLeft / 60;
+    short percent = (short) ((expProg * 100.) / expTime);
 
-    sprintf(experiment,     "Prog: %3.0f%% %3d%c", percent, (timeLeft < 60 ? timeLeft : timeLeftMin), (timeLeft < 60 ? 's' : 'm'));
+    sprintf(experiment,     "Prog: %3d%%  %3d%c", percent, (timeLeft < 60 ? timeLeft : timeLeftMin), (timeLeft < 60 ? 's' : 'm'));
     sprintf(airTemp,        "Air  tmp: %5.1fC", info -> airTmp);
     sprintf(soilTemp,       "Soil tmp: %5.1fC", info -> soilTmp);
     sprintf(airHumidity,    "Air  hum: %5.1f%%", info -> airHum);
