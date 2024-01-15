@@ -51,18 +51,6 @@ void updateInfoStat(Info *info, InfoStat *infoStat) {
     infoStat->count ++;
 }
 
-void experimentResults(Info data[], int size) {
-    clearScreen(dev);
-    while (1) {
-        displayExpResults(data, size);
-
-        if (getEnt()) {
-            resetBtns();
-            break;
-        }
-    }
-}
-
 void periodicRead(int time) { // Read and get average over a period of time
     printf("Reading data for %d seconds:\n", time);
 
@@ -86,7 +74,7 @@ void periodicRead(int time) { // Read and get average over a period of time
                 startTimeTicks = xTaskGetTickCount();
             }
         }
-
+        
         // LED's
         gpio_set_level(GPIO_LED_RED, level);
         level = !level;
@@ -111,27 +99,17 @@ void periodicRead(int time) { // Read and get average over a period of time
     // Sound Effect
     xTaskCreate(sfx_3, "sfx_3", 1000, NULL, 1, NULL);
 
-    experimentResults(data, time);
+    experimentResultsSelect(data, time);
     free(data); // Maybe needs to be moved if we want to use the array more
 }
 
-void app_main(void) {
-    i2cConfig();
-    initSoil();
-    initLight();
-    initButtons();
-    initLEDs();
-    initBuzzer();
-    initRGB_LED();
-
-    // Error blink. will remain alive for ever. 
-    xTaskCreate(blinkErrors, "blinkErrors", 1000, 1+2+4+8+16, 1, NULL);
-
+void mainTask() {
     Info current;
     InfoStat averages;
     averages.count = 0;
-    initDisplay();
 
+    // Error blink. will remain alive for ever. 
+    xTaskCreate(blinkErrors, "blinkErrors", 1000, 1+2+4+8+16, 1, NULL);
     //Boot melody
     xTaskCreate(melody_load, "melody_load", 1000, NULL, 1, NULL);
 
@@ -151,4 +129,17 @@ void app_main(void) {
         displayScreen(&current);
         vTaskDelayUntil(&startTimeTicks, DELAY(1000));
     }
+}
+
+void app_main(void) {
+    i2cConfig();
+    initSoil();
+    initLight();
+    initButtons();
+    initLEDs();
+    initBuzzer();
+    initDisplay();
+    initRGB_LED();
+
+    xTaskCreatePinnedToCore(&mainTask, "MainTask", 100000, NULL, 1, NULL, 0);    
 }

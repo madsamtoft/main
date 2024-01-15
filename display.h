@@ -48,13 +48,16 @@ void displayMenu(int select);
 void displayMenuExperiment(int select);
 void displayInfo(Info *info);
 void displayExperiment(Info *info, int expProg, int expTime);
-void displayExpResults(Info data[], int size);
+void displayExperimentAverage(Info data[], int size);
+void displayExperimentMin(Info *data, int size);
+void displayExperimentMax(Info *data, int size);
 void displaySoilInfo(Info *info);
 void displayAirInfo(Info *info);
 void displayLightInfo(Info *info);
 void displayExit();
 int exitSelect();
 void experimentSelect();
+void experimentResultsSelect(Info *data, int size);
 void menuSelect();
 void displayScreen(Info *info);
 
