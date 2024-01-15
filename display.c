@@ -88,38 +88,18 @@ void displayExperiment(Info *info, int expProg, int expTime) {
     ssd1306_display_text(&dev, 6, lightLevel, 16, false);
 }
 
-void displayExperimentAverage(Info data[], int size) {  
-    float airTmp = 0;
-    float soilTmp = 0;
-    float airHum = 0;
-    float soilHum = 0;
-    float lightVal = 0;
-
-    for (int i = 0; i < size; i++) {
-        airTmp += (data[i]).airTmp;
-        soilTmp += (data[i]).soilTmp;
-        airHum += (data[i]).airHum;
-        soilHum += (data[i]).soilHum;
-        lightVal += (data[i]).lightVal;
-    }
-
-    airTmp = airTmp / size;
-    soilTmp = soilTmp / size;
-    airHum = airHum / size;
-    soilHum = soilHum / size;
-    lightVal = lightVal / size;
-
+void displayExperimentAverage(Info *avg) {  
     char airTemp[17];
     char soilTemp[17];
     char airHumidity[17];
     char soilHumidity[17];
     char lightLevel[17];
 
-    sprintf(airTemp,        "Air  tmp: %5.1fC", airTmp);
-    sprintf(soilTemp,       "Soil tmp: %5.1fC", soilTmp);
-    sprintf(airHumidity,    "Air  hum: %5.1f%%", airHum);
-    sprintf(soilHumidity,   "Soil hum: %6.1f", soilHum);
-    sprintf(lightLevel,     "Lght lvl: %6.1f", lightVal);
+    sprintf(airTemp,        "Air  tmp: %5.1fC", avg -> airTmp);
+    sprintf(soilTemp,       "Soil tmp: %5.1fC", avg -> soilTmp);
+    sprintf(airHumidity,    "Air  hum: %5.1f%%", avg -> airHum);
+    sprintf(soilHumidity,   "Soil hum: %6d", avg -> soilHum);
+    sprintf(lightLevel,     "Lght lvl: %6d", avg -> lightVal);
 
     ssd1306_display_text(&dev, 1, "Exp. Average:", 13, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, false);
@@ -129,42 +109,18 @@ void displayExperimentAverage(Info data[], int size) {
     ssd1306_display_text(&dev, 6, lightLevel, 16, false);
 }
 
-void displayExperimentMin(Info *data, int size) {
-    float airTmp = data[0].airTmp;
-    float soilTmp = data[0].soilTmp;
-    float airHum = data[0].airHum;
-    float soilHum = data[0].soilHum;
-    float lightVal = data[0].lightVal;
-
-    for(int i = 0; i < size; i++) {
-        if(data[i].airTmp < airTmp) {
-            airTmp = (data[i]).airTmp;
-        }
-        if(data[i].soilTmp < soilTmp) {
-            soilTmp = (data[i]).soilTmp;
-        }
-        if(data[i].airHum < airHum) {
-            airHum = (data[i]).airHum;
-        }
-        if(data[i].soilHum < soilHum) {
-            soilHum = (data[i]).soilHum;
-        }
-        if(data[i].lightVal < lightVal) {
-            lightVal = (data[i]).lightVal;
-        }
-    }
-
+void displayExperimentMin(Info *min) {
     char airTemp[17];
     char soilTemp[17];
     char airHumidity[17];
     char soilHumidity[17];
     char lightLevel[17];
 
-    sprintf(airTemp,        "Air  tmp: %5.1fC", airTmp);
-    sprintf(soilTemp,       "Soil tmp: %5.1fC", soilTmp);
-    sprintf(airHumidity,    "Air  hum: %5.1f%%", airHum);
-    sprintf(soilHumidity,   "Soil hum: %6.1f", soilHum);
-    sprintf(lightLevel,     "Lght lvl: %6.1f", lightVal);
+    sprintf(airTemp,        "Air  tmp: %5.1fC", min -> airTmp);
+    sprintf(soilTemp,       "Soil tmp: %5.1fC", min -> soilTmp);
+    sprintf(airHumidity,    "Air  hum: %5.1f%%", min -> airHum);
+    sprintf(soilHumidity,   "Soil hum: %6d", min -> soilHum);
+    sprintf(lightLevel,     "Lght lvl: %6d", min -> lightVal);
 
     ssd1306_display_text(&dev, 1, "Minimum Values:", 15, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, false);
@@ -174,42 +130,18 @@ void displayExperimentMin(Info *data, int size) {
     ssd1306_display_text(&dev, 6, lightLevel, 16, false);
 }
 
-void displayExperimentMax(Info *data, int size) {
-    float airTmp = 0;
-    float soilTmp = 0;
-    float airHum = 0;
-    float soilHum = 0;
-    float lightVal = 0;
-
-    for (int i = 0; i < size; i++) {
-        if(data[i].airTmp > airTmp) {
-            airTmp = data[i].airTmp;
-        }
-        if(data[i].soilTmp > soilTmp) {
-            soilTmp = data[i].soilTmp;
-        }
-        if(data[i].airHum > airHum) {
-            airHum = data[i].airHum;
-        }
-        if(data[i].soilHum > soilHum) {
-            soilHum = data[i].soilHum;
-        }
-        if(data[i].lightVal > lightVal) {
-            lightVal = data[i].lightVal;
-        }
-    }
-
+void displayExperimentMax(Info *max) {
     char airTemp[17];
     char soilTemp[17];
     char airHumidity[17];
     char soilHumidity[17];
     char lightLevel[17];
 
-    sprintf(airTemp,        "Air  tmp: %5.1fC", airTmp);
-    sprintf(soilTemp,       "Soil tmp: %5.1fC", soilTmp);
-    sprintf(airHumidity,    "Air  hum: %5.1f%%", airHum);
-    sprintf(soilHumidity,   "Soil hum: %6.1f", soilHum);
-    sprintf(lightLevel,     "Lght lvl: %6.1f", lightVal);
+    sprintf(airTemp,        "Air  tmp: %5.1fC", max -> airTmp);
+    sprintf(soilTemp,       "Soil tmp: %5.1fC", max -> soilTmp);
+    sprintf(airHumidity,    "Air  hum: %5.1f%%", max -> airHum);
+    sprintf(soilHumidity,   "Soil hum: %6d", max -> soilHum);
+    sprintf(lightLevel,     "Lght lvl: %6d", max -> lightVal);
 
     ssd1306_display_text(&dev, 1, "Maximum Values:", 15, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, false);
@@ -341,19 +273,106 @@ void experimentSelect() {
     }
 }
 
+Info getAverage(Info data[], int size) {
+    Info avg;
+    avg.airTmp = 0;
+    avg.soilTmp = 0;
+    avg.airHum = 0;
+    avg.soilHum = 0;
+    avg.lightVal = 0;
+
+    for (int i = 0; i < size; i++) {
+        avg.airTmp += (data[i]).airTmp;
+        avg.soilTmp += (data[i]).soilTmp;
+        avg.airHum += (data[i]).airHum;
+        avg.soilHum += (data[i]).soilHum;
+        avg.lightVal += (data[i]).lightVal;
+    }
+
+    avg.airTmp = avg.airTmp / size;
+    avg.soilTmp = avg.soilTmp / size;
+    avg.airHum = avg.airHum / size;
+    avg.soilHum = avg.soilHum / size;
+    avg.lightVal = avg.lightVal / size;
+
+    return avg;
+}
+
+Info getMin(Info data[], int size) {
+    Info min;
+    min.airTmp = data[0].airTmp;
+    min.soilTmp = data[0].soilTmp;
+    min.airHum = data[0].airHum;
+    min.soilHum = data[0].soilHum;
+    min.lightVal = data[0].lightVal;
+
+    for(int i = 0; i < size; i++) {
+        if(data[i].airTmp < min.airTmp) {
+            min.airTmp = (data[i]).airTmp;
+        }
+        if(data[i].soilTmp < min.soilTmp) {
+            min.soilTmp = (data[i]).soilTmp;
+        }
+        if(data[i].airHum < min.airHum) {
+            min.airHum = (data[i]).airHum;
+        }
+        if(data[i].soilHum < min.soilHum) {
+            min.soilHum = (data[i]).soilHum;
+        }
+        if(data[i].lightVal < min.lightVal) {
+            min.lightVal = (data[i]).lightVal;
+        }
+    }
+
+    return min;
+}
+
+Info getMax(Info data[], int size) {
+    Info max;
+    max.airTmp = data[0].airTmp;
+    max.soilTmp = data[0].soilTmp;
+    max.airHum = data[0].airHum;
+    max.soilHum = data[0].soilHum;
+    max.lightVal = data[0].lightVal;
+
+    for (int i = 0; i < size; i++) {
+        if(data[i].airTmp > max.airTmp) {
+            max.airTmp = data[i].airTmp;
+        }
+        if(data[i].soilTmp > max.soilTmp) {
+            max.soilTmp = data[i].soilTmp;
+        }
+        if(data[i].airHum > max.airHum) {
+            max.airHum = data[i].airHum;
+        }
+        if(data[i].soilHum > max.soilHum) {
+            max.soilHum = data[i].soilHum;
+        }
+        if(data[i].lightVal > max.lightVal) {
+            max.lightVal = data[i].lightVal;
+        }
+    }
+
+    return max;
+}
+
 void experimentResultsSelect(Info data[], int size) {
+    Info avg = getAverage(data, size);
+    Info min = getMin(data, size);
+    Info max = getMax(data, size);
+
     int select = 0;
     clearScreen(dev);
     while (1) {
         switch (select) {
         case 0:
-            displayExperimentAverage(data, size);
+            displayExperimentAverage(&avg);
             break;
         case 1:
-            displayExperimentMin(data, size);
+            displayExperimentMin(&min);
             break;
         case 2:
-            displayExperimentMax(data, size);
+            displayExperimentMax(&max);
             break;
         }
         if (getEnt()) {

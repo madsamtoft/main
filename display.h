@@ -43,26 +43,26 @@ static bool soilHumError = false;
 static bool lightError = false;
 static bool blink = false;
 
-
 void initDisplay();
 void clearScreen();
 void displayMenu(int select);
 void displayMenuExperiment(int select);
 void displayInfo(Info *info);
 void displayExperiment(Info *info, int expProg, int expTime);
-void displayExperimentAverage(Info data[], int size);
-void displayExperimentMin(Info *data, int size);
-void displayExperimentMax(Info *data, int size);
+void displayExperimentAverage(Info *avg);
+void displayExperimentMin(Info *min);
+void displayExperimentMax(Info *max);
 void displaySoilInfo(Info *info);
 void displayAirInfo(Info *info);
 void displayLightInfo(Info *info);
 void displayExit();
 int exitSelect();
 void experimentSelect();
+Info getAvg(Info data[], int size);
+Info getMin(Info data[], int size);
+Info getMax(Info data[], int size);
 void experimentResultsSelect(Info *data, int size);
 void menuSelect();
 void displayScreen(Info *info);
-
-
 
 #endif

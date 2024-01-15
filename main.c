@@ -57,7 +57,8 @@ void periodicRead(int time) { // Read and get average over a period of time
     // LED's
     gpio_set_level(GPIO_LED_GREEN, 0);
     int level = 1;
-
+    resetStatusBits(); // Reset error LED
+    
     // Prepare Array
     Info *data = (Info *) malloc(sizeof(Info) * time);
 
