@@ -213,30 +213,63 @@ void displayExperimentMax(Info *data, int size) {
 }
 
 void displaySoilInfo(Info *info) {
+    bool soilTmpHigh = info -> soilTmp > HIGH_SOIL_TMP;
+    bool soilTmpLow = info -> soilTmp < LOW_SOIL_TMP;
+    bool soilHumHigh = info -> soilHum > HIGH_SOIL_HUM;
+    bool soilHumLow = info -> soilHum < LOW_SOIL_HUM;
+    
     char soilTemp[17];
     char soilHumidity[17];
-    sprintf(soilTemp,       "Soil tmp: %5.1fC", info -> soilTmp);
-    sprintf(soilHumidity,   "Soil hum: %6d", info -> soilHum);
+    char soilTempStat[17];
+    char soilHumidityStat[17];
+
+    sprintf(soilTemp,         "Soil tmp: %5.1fC", info -> soilTmp);
+    sprintf(soilHumidity,     "Soil hum: %6d", info -> soilHum);
+    sprintf(soilTempStat,     "Tmp Stat: %6s", soilTmpHigh ? "HIGH" : (soilTmpLow ? "LOW" : "OK"));
+    sprintf(soilHumidityStat, "Hum Stat: %6s", soilHumHigh ? "HIGH" : (soilHumLow ? "LOW" : "OK"));
+
     ssd1306_display_text(&dev, 1, "Soil info:", 10, false);
     ssd1306_display_text(&dev, 2, soilTemp, 16, false);
     ssd1306_display_text(&dev, 3, soilHumidity, 16, false);
+    ssd1306_display_text(&dev, 5, soilTempStat, 16, false);
+    ssd1306_display_text(&dev, 6, soilHumidityStat, 16, false);
 }
 
 void displayAirInfo(Info *info) {
+    bool airTmpHigh = info -> airTmp > HIGH_AIR_TMP;
+    bool airTmpLow = info -> airTmp < LOW_AIR_TMP;
+    bool airHumHigh = info -> airHum > HIGH_AIR_HUM;
+    bool airHumLow = info -> airHum < LOW_AIR_HUM;
+
     char airTemp[17];
     char airHumidity[17];
+    char airTempStat[17];
+    char airHumidityStat[17];
+
     sprintf(airTemp,        "Air  tmp: %5.1fC", info -> airTmp);
     sprintf(airHumidity,    "Air  hum: %5.1f%%", info -> airHum);
+    sprintf(airTempStat,    "Tmp Stat: %6s", airTmpHigh ? "HIGH" : (airTmpLow ? "LOW" : "OK"));
+    sprintf(airHumidityStat,"Hum Stat: %6s", airHumHigh ? "HIGH" : (airHumLow ? "LOW" : "OK"));
+
     ssd1306_display_text(&dev, 1, "Air info:", 9, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, false);
     ssd1306_display_text(&dev, 3, airHumidity, 16, false);
+    ssd1306_display_text(&dev, 5, airTempStat, 16, false);
+    ssd1306_display_text(&dev, 6, airHumidityStat, 16, false);
 }
 
 void displayLightInfo(Info *info) {
+    bool lightLvlLow = info -> lightVal < LOW_LIGHT;
+
     char lightLevel[17];
+    char lightLevelStat[17];
+
     sprintf(lightLevel,     "Lght lvl: %6d", info -> lightVal);
+    sprintf(lightLevelStat, "Lght Stat: %5s", lightLvlLow ? "LOW" : "OK");
+
     ssd1306_display_text(&dev, 1, "Light info:", 11, false);
     ssd1306_display_text(&dev, 2, lightLevel, 16, false);
+    ssd1306_display_text(&dev, 4, lightLevelStat, 16, false);
 }
 
 void displayExit(int select) {

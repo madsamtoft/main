@@ -102,7 +102,7 @@ void periodicRead(int time) { // Read and get average over a period of time
     free(data); // Maybe needs to be moved if we want to use the array more
 }
 
-void main() {
+void mainTask() {
     Info current;
     InfoStat averages;
     averages.count = 0;
@@ -138,5 +138,5 @@ void app_main(void) {
     initDisplay();
 
     vTaskDelay(DELAY(1000));
-    xTaskCreatePinnedToCore(&main, "MainTask", 100000, NULL, 1, NULL, 0);    
+    xTaskCreatePinnedToCore(&mainTask, "MainTask", 100000, NULL, 1, NULL, 0);    
 }
