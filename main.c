@@ -27,6 +27,41 @@ void updateInfo(Info *info) {
     updateLight(info);
 }
 
+void updateStat(float count, float value, Stat *stat) {
+    if (count == 0) {
+        stat->avg = value;
+        stat->min = value;
+        stat->max = value;
+        return;
+    }
+    float a = count / (count + 1);
+    float b = 1.0 / (count + 1);
+    stat->avg = stat->avg * a + value * b;
+    stat->min = fmin(stat->min, value);
+    stat->max = fmax(stat->max, value);
+}
+
+void updateInfoStat(Info *info, InfoStat *infoStat) {
+    updateStat(infoStat->count, info->airTmp, &(infoStat->airTmp));
+    updateStat(infoStat->count, info->airHum, &(infoStat->airHum));
+    updateStat(infoStat->count, info->soilHum, &(infoStat->soilHum));
+    updateStat(infoStat->count, info->soilTmp, &(infoStat->soilTmp));
+    updateStat(infoStat->count, info->lightVal, &(infoStat->lightVal));
+    infoStat->count ++;
+}
+
+void experimentResults(Info data[], int size) {
+    clearScreen(dev);
+    while (1) {
+        displayExpResults(data, size);
+
+        if (getEnt()) {
+            resetBtns();
+            break;
+        }
+    }
+}
+
 void periodicRead(int time) { // Read and get average over a period of time
     printf("Reading data for %d seconds:\n", time);
 
@@ -81,6 +116,8 @@ void periodicRead(int time) { // Read and get average over a period of time
 
 void appmain2() {
     Info current;
+    InfoStat averages;
+    averages.count = 0;
     initDisplay();
 
     //Boot melody
@@ -96,6 +133,7 @@ void appmain2() {
             startTimeTicks = xTaskGetTickCount();
         }
         updateInfo(&current);
+        updateInfoStat(&current, &averages);
         printInfo(&current);
         displayScreen(&current);
         vTaskDelayUntil(&startTimeTicks, DELAY(1000));

@@ -6,5 +6,7 @@
 
 void printInfo(Info *info);
 void printData(Info data[], int length);
+void printStat(char *name, Stat stat);
+void printInfoStat(InfoStat *infoStat);
 
 #endif
