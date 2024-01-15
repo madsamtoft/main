@@ -17,7 +17,7 @@
 #define LOW_AIR_TMP 10
 #define HIGH_AIR_TMP 30
 
-#define LOW_LIGHT 1000
+#define LOW_LIGHT 900
 
 enum screen {
     OVERVIEW,           // 0
@@ -30,7 +30,9 @@ enum experiment {
     EXP_5SEC,   // 0
     EXP_1MIN,   // 1
     EXP_5MIN,   // 2
-    EXP_1HOUR   // 3
+    EXP_30MIN,  // 3
+    EXP_1HOUR   // 4
+
 };
 
 static char currentDisplay = OVERVIEW;

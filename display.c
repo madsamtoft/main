@@ -25,10 +25,11 @@ void displayMenu(int select) { // Method to display the menu
 
 void displayMenuExperiment(int select) {
     ssd1306_display_text(&dev, 1, "Run exp. for:", 13, false);
-    ssd1306_display_text(&dev, 2, " * 5 seconds", 12, (select == 0));
-    ssd1306_display_text(&dev, 3, " * 1 minute", 11, (select == 1));
-    ssd1306_display_text(&dev, 4, " * 5 minutes", 12, (select == 2));
-    ssd1306_display_text(&dev, 5, " * 1 hour", 9, (select == 3));
+    ssd1306_display_text(&dev, 2, " * 5 seconds", 12, (select == EXP_5SEC));
+    ssd1306_display_text(&dev, 3, " * 1 minute", 11, (select == EXP_1MIN));
+    ssd1306_display_text(&dev, 4, " * 5 minutes", 12, (select == EXP_5MIN));
+    ssd1306_display_text(&dev, 5, " * 30 minutes", 12, (select == EXP_30MIN));
+    ssd1306_display_text(&dev, 6, " * 1 hour", 9, (select == EXP_1HOUR));
 }
 
 void displayInfo(Info *info) { // Method to display current info values
@@ -59,14 +60,18 @@ void displayInfo(Info *info) { // Method to display current info values
 }
 
 void displayExperiment(Info *info, int expProg, int expTime) {
-    char experiment[17] = "";
+    char experiment[20];
     char airTemp[17];
     char soilTemp[17];
     char airHumidity[17];
     char soilHumidity[17];
     char lightLevel[17];
 
-    sprintf(experiment,     "Exp. (%d/%d)", expProg, expTime);
+    short timeLeft = expTime - expProg;
+    short timeLeftMin = timeLeft/60;
+    short percent = (expProg*100 / expTime);
+
+    sprintf(experiment,     "Prog: %3.0f%% %3d%c", percent, (timeLeft < 60 ? timeLeft : timeLeftMin), (timeLeft < 60 ? 's' : 'm'));
     sprintf(airTemp,        "Air  tmp: %5.1fC", info -> airTmp);
     sprintf(soilTemp,       "Soil tmp: %5.1fC", info -> soilTmp);
     sprintf(airHumidity,    "Air  hum: %5.1f%%", info -> airHum);
@@ -314,6 +319,9 @@ void experimentSelect() {
             case EXP_5MIN:
                 periodicRead(300);
                 break;
+            case EXP_30MIN:
+                periodicRead(1800);
+                break;
             case EXP_1HOUR:
                 periodicRead(3600);
                 break;
@@ -325,15 +333,13 @@ void experimentSelect() {
         if (getSel()) {
             resetBtns();
             select++;
-            select %= 4;
+            select %= (int) sizeof(enum experiment) + 1; 
             vTaskDelay(DELAY(100));
         }
     }
 }
 
 void experimentResultsSelect(Info data[], int size) {
-    
-
     int select = 0;
     clearScreen(dev);
     while (1) {
