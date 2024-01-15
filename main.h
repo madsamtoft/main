@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #include <stdio.h>
+#include <math.h>
 #include <stdlib.h> // malloc
 #include "sdkconfig.h"
 #include "freertos/FreeRTOS.h"
@@ -40,6 +41,21 @@ typedef struct {
     float soilTmp;
     short lightVal;
 } Info;
+
+typedef struct {
+    float avg;
+    float min;
+    float max;
+} Stat;
+
+typedef struct {
+    Stat airTmp;
+    Stat airHum;
+    Stat soilHum;
+    Stat soilTmp;
+    Stat lightVal;
+    long count;
+} InfoStat;
 
 static SSD1306_t dev;
 

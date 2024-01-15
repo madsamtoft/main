@@ -27,6 +27,29 @@ void updateInfo(Info *info) {
     updateLight(info);
 }
 
+void updateStat(float count, float value, Stat *stat) {
+    if (count == 0) {
+        stat->avg = value;
+        stat->min = value;
+        stat->max = value;
+        return;
+    }
+    float a = count / (count + 1);
+    float b = 1.0 / (count + 1);
+    stat->avg = stat->avg * a + value * b;
+    stat->min = fmin(stat->min, value);
+    stat->max = fmax(stat->max, value);
+}
+
+void updateInfoStat(Info *info, InfoStat *infoStat) {
+    updateStat(infoStat->count, info->airTmp, &(infoStat->airTmp));
+    updateStat(infoStat->count, info->airHum, &(infoStat->airHum));
+    updateStat(infoStat->count, info->soilHum, &(infoStat->soilHum));
+    updateStat(infoStat->count, info->soilTmp, &(infoStat->soilTmp));
+    updateStat(infoStat->count, info->lightVal, &(infoStat->lightVal));
+    infoStat->count ++;
+}
+
 void periodicRead(int time) { // Read and get average over a period of time
     printf("Reading data for %d seconds:\n", time);
 
@@ -83,6 +106,8 @@ void app_main(void) {
     initBuzzer();
 
     Info current;
+    InfoStat averages;
+    averages.count = 0;
     initDisplay();
 
     //Boot melody
@@ -95,6 +120,7 @@ void app_main(void) {
             menuSelect();
         }
         updateInfo(&current);
+        updateInfoStat(&current, &averages);
         printInfo(&current);
         displayScreen(&current);
         vTaskDelay(DELAY(735)); // The time it takes to execute one iteration is 265ms
