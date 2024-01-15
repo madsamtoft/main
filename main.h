@@ -13,6 +13,7 @@
 #include "driver/gpio.h" // For GPIO (Buttons and LEDs)
 #include "driver/adc.h" // For ADC (Light)
 #include "driver/i2c.h" // For I2C (Soil and Temp/Humidity)
+#include "driver/ledc.h" // For RGB LED
 
 //Temperature/humidity sensor library
 #include <am2320.h>

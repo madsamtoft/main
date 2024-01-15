@@ -39,6 +39,7 @@ static bool soilTmpError = false;
 static bool airHumError = false;
 static bool soilHumError = false;
 static bool lightError = false;
+static bool blink = false;
 
 
 void initDisplay();

@@ -1,6 +1,7 @@
 #include "display.h"
 #include "gpio.h"
 #include "buzzer.h"
+#include "error_led.h"
 
 void initDisplay() {
     i2c_master_shared_i2c_init(&dev);
@@ -31,12 +32,13 @@ void displayMenuExperiment(int select) {
     ssd1306_display_text(&dev, 5, " * 1 hour", 9, (select == 3));
 }
 
-void displayInfo(Info *info) { // Method to display current info values
-    airTmpError = airTmpError ? false : info -> airTmp < LOW_AIR_TMP || info -> airTmp > HIGH_AIR_TMP;
-    soilTmpError = soilTmpError ? false : info -> soilTmp < LOW_SOIL_TMP || info -> soilTmp > HIGH_SOIL_TMP;
-    airHumError = airHumError ? false : info -> airHum < LOW_AIR_HUM || info -> airHum > HIGH_AIR_HUM;
-    soilHumError = soilHumError ? false : info -> soilHum < LOW_SOIL_HUM || info -> soilHum > HIGH_SOIL_HUM;
-    lightError = lightError ? false : info -> lightVal < LOW_LIGHT;
+void displayInfo(Info *info) { // Method to display current info values    
+    airTmpError = info -> airTmp < LOW_AIR_TMP || info -> airTmp > HIGH_AIR_TMP;
+    soilTmpError = info -> soilTmp < LOW_SOIL_TMP || info -> soilTmp > HIGH_SOIL_TMP;
+    airHumError = info -> airHum < LOW_AIR_HUM || info -> airHum > HIGH_AIR_HUM;
+    soilHumError = info -> soilHum < LOW_SOIL_HUM || info -> soilHum > HIGH_SOIL_HUM;
+    lightError = info -> lightVal < LOW_LIGHT;
+    blink = !blink;
 
     char airTemp[17];
     char soilTemp[17];
@@ -51,11 +53,11 @@ void displayInfo(Info *info) { // Method to display current info values
     sprintf(lightLevel,     "Lght lvl: %6d", info -> lightVal);
 
     ssd1306_display_text(&dev, 1, "Overview:", 9, false);
-    ssd1306_display_text(&dev, 2, airTemp, 16, airTmpError);
-    ssd1306_display_text(&dev, 3, soilTemp, 16, soilTmpError);
-    ssd1306_display_text(&dev, 4, airHumidity, 16, airHumError);
-    ssd1306_display_text(&dev, 5, soilHumidity, 16, soilHumError);
-    ssd1306_display_text(&dev, 6, lightLevel, 16, lightError);
+    ssd1306_display_text(&dev, 2, airTemp, 16, airTmpError && blink);
+    ssd1306_display_text(&dev, 3, soilTemp, 16, soilTmpError && blink);
+    ssd1306_display_text(&dev, 4, airHumidity, 16, airHumError && blink);
+    ssd1306_display_text(&dev, 5, soilHumidity, 16, soilHumError && blink);
+    ssd1306_display_text(&dev, 6, lightLevel, 16, lightError && blink);
 }
 
 void displayExperiment(Info *info, int expProg, int expTime) {
