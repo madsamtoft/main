@@ -27,6 +27,18 @@ void updateInfo(Info *info) {
     updateLight(info);
 }
 
+void experimentResults(Info data[], int size) {
+    clearScreen(dev);
+    while (1) {
+        displayExpResults(data, size);
+
+        if (getEnt()) {
+            resetBtns();
+            break;
+        }
+    }
+}
+
 void periodicRead(int time) { // Read and get average over a period of time
     printf("Reading data for %d seconds:\n", time);
 
@@ -39,7 +51,9 @@ void periodicRead(int time) { // Read and get average over a period of time
 
     // Task Handling
     TickType_t startTimeTicks = xTaskGetTickCount();
-    for (int i = 0; i < time; i++) {
+
+    int i;
+    for (i = 0; i < time; i++) {
         if (getEnt()) {
             resetBtns();
             if (exitSelect()) {
@@ -60,13 +74,11 @@ void periodicRead(int time) { // Read and get average over a period of time
 
         // Task Handling
         vTaskDelayUntil(&startTimeTicks, DELAY(1000));
-
-        if(i == time - 1) {
+    }
+    if(i == time - 1) {
             displayExperiment(&(data[time - 1]), time, time);
             printData(data, time);
-        }
     }
-    free(data); // Maybe needs to be moved if we want to use the array more
 
     // LED's
     gpio_set_level(GPIO_LED_RED, 0);
@@ -74,6 +86,9 @@ void periodicRead(int time) { // Read and get average over a period of time
 
     // Sound Effect
     xTaskCreate(sfx_3, "sfx_3", 1000, NULL, 1, NULL);
+
+    experimentResults(data, time);
+    free(data); // Maybe needs to be moved if we want to use the array more
 }
 
 void app_main(void) {
@@ -90,16 +105,18 @@ void app_main(void) {
     //Boot melody
     xTaskCreate(melody_load, "melody_load", 1000, NULL, 1, NULL);
 
+    TickType_t startTimeTicks = xTaskGetTickCount();
     while (1) {
         if (getEnt()) {
             resetBtns();
             clearScreen();
             menuSelect();
+        } else {
+            startTimeTicks = xTaskGetTickCount();
         }
         updateInfo(&current);
         printInfo(&current);
         displayScreen(&current);
-        vTaskDelay(DELAY(735)); // The time it takes to execute one iteration is 265ms
-        
+        vTaskDelayUntil(&startTimeTicks, DELAY(1000));
     }
 }
