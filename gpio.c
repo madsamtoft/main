@@ -32,7 +32,7 @@ void initButtons() { // Configure buttons
     gpio_set_direction(GPIO_BTN_SELECT, GPIO_MODE_INPUT);
     gpio_pullup_en(GPIO_BTN_ENTER); // Enable pull-up resistor
     gpio_pullup_en(GPIO_BTN_SELECT);
-    gpio_set_intr_type(GPIO_BTN_ENTER, GPIO_INTR_LOW_LEVEL); // Set interrupt on positive edge
+    gpio_set_intr_type(GPIO_BTN_ENTER, GPIO_INTR_LOW_LEVEL); // Set interrupt type
     gpio_set_intr_type(GPIO_BTN_SELECT, GPIO_INTR_LOW_LEVEL);
     gpio_isr_handler_add(GPIO_BTN_ENTER, interruptEnter, NULL); // Add handler for button interrupt
     gpio_isr_handler_add(GPIO_BTN_SELECT, interruptSelect, NULL);

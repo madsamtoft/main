@@ -27,18 +27,6 @@ void updateInfo(Info *info) {
     updateLight(info);
 }
 
-void experimentResults(Info data[], int size) {
-    clearScreen(dev);
-    while (1) {
-        displayExpResults(data, size);
-
-        if (getEnt()) {
-            resetBtns();
-            break;
-        }
-    }
-}
-
 void periodicRead(int time) { // Read and get average over a period of time
     printf("Reading data for %d seconds:\n", time);
 
@@ -62,7 +50,7 @@ void periodicRead(int time) { // Read and get average over a period of time
                 startTimeTicks = xTaskGetTickCount();
             }
         }
-
+        
         // LED's
         gpio_set_level(GPIO_LED_RED, level);
         level = !level;
@@ -87,18 +75,11 @@ void periodicRead(int time) { // Read and get average over a period of time
     // Sound Effect
     xTaskCreate(sfx_3, "sfx_3", 1000, NULL, 1, NULL);
 
-    experimentResults(data, time);
+    experimentResultsSelect(data, time);
     free(data); // Maybe needs to be moved if we want to use the array more
 }
 
-void app_main(void) {
-    i2cConfig();
-    initSoil();
-    initLight();
-    initButtons();
-    initLEDs();
-    initBuzzer();
-
+void appmain2() {
     Info current;
     initDisplay();
 
@@ -119,4 +100,15 @@ void app_main(void) {
         displayScreen(&current);
         vTaskDelayUntil(&startTimeTicks, DELAY(1000));
     }
+}
+
+void app_main(void) {
+    i2cConfig();
+    initSoil();
+    initLight();
+    initButtons();
+    initLEDs();
+    initBuzzer();
+
+    xTaskCreatePinnedToCore(&appmain2, "MainTask", 100000, NULL, 1, NULL, 0);
 }

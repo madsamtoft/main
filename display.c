@@ -74,19 +74,142 @@ void displayExperiment(Info *info, int expProg, int expTime) {
     sprintf(lightLevel,     "Lght lvl: %6d", info -> lightVal);
 
     ssd1306_display_text(&dev, 1, experiment, 16, false);
-    ssd1306_display_text(&dev, 2, airTemp, 16, airTmpError);
-    ssd1306_display_text(&dev, 3, soilTemp, 16, soilTmpError);
-    ssd1306_display_text(&dev, 4, airHumidity, 16, airHumError);
-    ssd1306_display_text(&dev, 5, soilHumidity, 16, soilHumError);
-    ssd1306_display_text(&dev, 6, lightLevel, 16, lightError);
+    ssd1306_display_text(&dev, 2, airTemp, 16, false);
+    ssd1306_display_text(&dev, 3, soilTemp, 16, false);
+    ssd1306_display_text(&dev, 4, airHumidity, 16, false);
+    ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
+    ssd1306_display_text(&dev, 6, lightLevel, 16, false);
 }
 
-void displayExpResults(Info data[], int size) {
-    float avgAirTmp;
-    float avgSoilTmp;
+void displayExperimentAverage(Info data[], int size) {  
+    float airTmp = 0;
+    float soilTmp = 0;
+    float airHum = 0;
+    float soilHum = 0;
+    float lightVal = 0;
 
-    ssd1306_display_text_x3(&dev, 1, "OOOGA", 5, true);
+    for (int i = 0; i < size; i++) {
+        airTmp += (data[i]).airTmp;
+        soilTmp += (data[i]).soilTmp;
+        airHum += (data[i]).airHum;
+        soilHum += (data[i]).soilHum;
+        lightVal += (data[i]).lightVal;
+    }
 
+    airTmp = airTmp / size;
+    soilTmp = soilTmp / size;
+    airHum = airHum / size;
+    soilHum = soilHum / size;
+    lightVal = lightVal / size;
+
+    char airTemp[17];
+    char soilTemp[17];
+    char airHumidity[17];
+    char soilHumidity[17];
+    char lightLevel[17];
+
+    sprintf(airTemp,        "Air  tmp: %5.1fC", airTmp);
+    sprintf(soilTemp,       "Soil tmp: %5.1fC", soilTmp);
+    sprintf(airHumidity,    "Air  hum: %5.1f%%", airHum);
+    sprintf(soilHumidity,   "Soil hum: %6.1f", soilHum);
+    sprintf(lightLevel,     "Lght lvl: %6.1f", lightVal);
+
+    ssd1306_display_text(&dev, 1, "Exp. Average:", 13, false);
+    ssd1306_display_text(&dev, 2, airTemp, 16, false);
+    ssd1306_display_text(&dev, 3, soilTemp, 16, false);
+    ssd1306_display_text(&dev, 4, airHumidity, 16, false);
+    ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
+    ssd1306_display_text(&dev, 6, lightLevel, 16, false);
+}
+
+void displayExperimentMin(Info *data, int size) {
+    float airTmp = data[0].airTmp;
+    float soilTmp = data[0].soilTmp;
+    float airHum = data[0].airHum;
+    float soilHum = data[0].soilHum;
+    float lightVal = data[0].lightVal;
+
+    for(int i = 0; i < size; i++) {
+        if(data[i].airTmp < airTmp) {
+            airTmp = (data[i]).airTmp;
+        }
+        if(data[i].soilTmp < soilTmp) {
+            soilTmp = (data[i]).soilTmp;
+        }
+        if(data[i].airHum < airHum) {
+            airHum = (data[i]).airHum;
+        }
+        if(data[i].soilHum < soilHum) {
+            soilHum = (data[i]).soilHum;
+        }
+        if(data[i].lightVal < lightVal) {
+            lightVal = (data[i]).lightVal;
+        }
+    }
+
+    char airTemp[17];
+    char soilTemp[17];
+    char airHumidity[17];
+    char soilHumidity[17];
+    char lightLevel[17];
+
+    sprintf(airTemp,        "Air  tmp: %5.1fC", airTmp);
+    sprintf(soilTemp,       "Soil tmp: %5.1fC", soilTmp);
+    sprintf(airHumidity,    "Air  hum: %5.1f%%", airHum);
+    sprintf(soilHumidity,   "Soil hum: %6.1f", soilHum);
+    sprintf(lightLevel,     "Lght lvl: %6.1f", lightVal);
+
+    ssd1306_display_text(&dev, 1, "Minimum Values:", 15, true);
+    ssd1306_display_text(&dev, 2, airTemp, 16, false);
+    ssd1306_display_text(&dev, 3, soilTemp, 16, false);
+    ssd1306_display_text(&dev, 4, airHumidity, 16, false);
+    ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
+    ssd1306_display_text(&dev, 6, lightLevel, 16, false);
+}
+
+void displayExperimentMax(Info *data, int size) {
+    float airTmp = 0;
+    float soilTmp = 0;
+    float airHum = 0;
+    float soilHum = 0;
+    float lightVal = 0;
+
+    for (int i = 0; i < size; i++) {
+        if(data[i].airTmp > airTmp) {
+            airTmp = data[i].airTmp;
+        }
+        if(data[i].soilTmp > soilTmp) {
+            soilTmp = data[i].soilTmp;
+        }
+        if(data[i].airHum > airHum) {
+            airHum = data[i].airHum;
+        }
+        if(data[i].soilHum > soilHum) {
+            soilHum = data[i].soilHum;
+        }
+        if(data[i].lightVal > lightVal) {
+            lightVal = data[i].lightVal;
+        }
+    }
+
+    char airTemp[17];
+    char soilTemp[17];
+    char airHumidity[17];
+    char soilHumidity[17];
+    char lightLevel[17];
+
+    sprintf(airTemp,        "Air  tmp: %5.1fC", airTmp);
+    sprintf(soilTemp,       "Soil tmp: %5.1fC", soilTmp);
+    sprintf(airHumidity,    "Air  hum: %5.1f%%", airHum);
+    sprintf(soilHumidity,   "Soil hum: %6.1f", soilHum);
+    sprintf(lightLevel,     "Lght lvl: %6.1f", lightVal);
+
+    ssd1306_display_text(&dev, 1, "Maximum Values:", 15, true);
+    ssd1306_display_text(&dev, 2, airTemp, 16, false);
+    ssd1306_display_text(&dev, 3, soilTemp, 16, false);
+    ssd1306_display_text(&dev, 4, airHumidity, 16, false);
+    ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
+    ssd1306_display_text(&dev, 6, lightLevel, 16, false);
 }
 
 void displaySoilInfo(Info *info) {
@@ -141,7 +264,6 @@ int exitSelect() {
     }
 }
 
-
 void experimentSelect() {
     int select = 0;
     while (1) {
@@ -171,6 +293,36 @@ void experimentSelect() {
             resetBtns();
             select++;
             select %= 4;
+            vTaskDelay(DELAY(100));
+        }
+    }
+}
+
+void experimentResultsSelect(Info data[], int size) {
+    
+
+    int select = 0;
+    clearScreen(dev);
+    while (1) {
+        switch (select) {
+        case 0:
+            displayExperimentAverage(data, size);
+            break;
+        case 1:
+            displayExperimentMin(data, size);
+            break;
+        case 2:
+            displayExperimentMax(data, size);
+            break;
+        }
+        if (getEnt()) {
+            return;
+        }
+        if (getSel()) {
+            resetBtns();
+            clearScreen(dev);
+            select++;
+            select %= 3;
             vTaskDelay(DELAY(100));
         }
     }
