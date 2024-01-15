@@ -62,10 +62,10 @@ void displayInfo(Info *info) { // Method to display current info values
     ssd1306_display_text(&dev, 1, "Overview:", 9, false);
 }
 
-void displayExperiment(Info *info, int expLeng, int expProg) {
+void displayExperiment(Info *info, int expProg, int expTime) {
     displayText(info);
-    char experiment[17];
-    sprintf(experiment, "Exp. (%d/%d)", expLeng, expProg);
+    char experiment[17] = "";
+    sprintf(experiment, "Exp. (%d/%d)", expProg, expTime);
     ssd1306_display_text(&dev, 1, experiment, 16, false);
 }
 
@@ -140,9 +140,10 @@ void experimentSelect() {
                 periodicRead(300);
                 break;
             case EXP_1HOUR:
-                periodicRead(6000);
+                periodicRead(3600);
                 break;
             }
+            clearScreen(dev);
             currentDisplay = OVERVIEW;
             return;
         }

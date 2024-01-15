@@ -46,7 +46,7 @@ void clearScreen();
 void displayMenu(int select);
 void displayMenuExperiment(int select);
 void displayInfo(Info *info);
-void displayExperiment(Info *info, int expLeng, int expProg);
+void displayExperiment(Info *info, int expProg, int expTime);
 void displaySoilInfo(Info *info);
 void displayAirInfo(Info *info);
 void displayLightInfo(Info *info);
