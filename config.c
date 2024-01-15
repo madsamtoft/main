@@ -55,11 +55,13 @@ void periodicRead(int time) { // Read and get average over a period of time
         // INFO
         updateInfo(&(data[i]));
         // printInfo(&(data[i]));
-        displayInfo(&(data[i]));
+        displayExperiment(&(data[i]), time, i);
 
         // Task Handling
         vTaskDelayUntil(&startTimeTicks, DELAY(1000));
     }
+    displayExperiment(&(data[time - 1]), time, time);
+    
     printData(data, time);
     free(data); // Maybe needs to be moved if we want to use the array more
     
