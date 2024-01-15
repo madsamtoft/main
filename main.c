@@ -55,8 +55,7 @@ void periodicRead(int time) { // Read and get average over a period of time
     printf("Reading data for %d seconds:\n", time);
 
     // LED's
-    gpio_set_level(GPIO_LED_GREEN, 0);
-    int level = 1;
+    gpio_set_level(GPIO_LED_RED, 1);
 
     // Prepare Array
     Info *data = (Info *) malloc(sizeof(Info) * time);
@@ -74,10 +73,6 @@ void periodicRead(int time) { // Read and get average over a period of time
                 startTimeTicks = xTaskGetTickCount();
             }
         }
-        
-        // LED's
-        gpio_set_level(GPIO_LED_RED, level);
-        level = !level;
 
         // INFO
         updateInfo(&(data[i]));
@@ -89,7 +84,6 @@ void periodicRead(int time) { // Read and get average over a period of time
     }
     // LED's
     gpio_set_level(GPIO_LED_RED, 0);
-    gpio_set_level(GPIO_LED_GREEN, 1);
 
     // Sound Effect
     xTaskCreate(sfx_3, "sfx_3", 1000, NULL, 1, NULL);

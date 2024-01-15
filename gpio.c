@@ -40,9 +40,6 @@ void initButtons() { // Configure buttons
 
 void initLEDs() { // Configure LEDs
     gpio_reset_pin(GPIO_LED_RED);
-    gpio_reset_pin(GPIO_LED_GREEN);
     gpio_set_direction(GPIO_LED_RED, GPIO_MODE_OUTPUT);
-    gpio_set_direction(GPIO_LED_GREEN, GPIO_MODE_OUTPUT);
     gpio_set_level(GPIO_LED_RED, 0);
-    gpio_set_level(GPIO_LED_GREEN, 1);
 }
