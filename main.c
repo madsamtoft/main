@@ -102,10 +102,6 @@ void periodicRead(int time) { // Read and get average over a period of time
     free(data); // Maybe needs to be moved if we want to use the array more
 }
 
-void appmain2() {
-    
-}
-
 void main() {
     Info current;
     InfoStat averages;
@@ -131,7 +127,6 @@ void main() {
         vTaskDelayUntil(&startTimeTicks, DELAY(1000));
     }
 }
-
 
 void app_main(void) {
     i2cConfig();
