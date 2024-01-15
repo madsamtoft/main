@@ -7,6 +7,7 @@
 #include "console.h"
 #include "buzzer.h"
 #include "gpio.h"
+#include "error_led.h"
 
 void i2cConfig() {
     i2c_config_t conf;
@@ -106,7 +107,8 @@ void mainTask() {
     InfoStat averages;
     averages.count = 0;
 
-    vTaskDelay(DELAY(1000));
+    // Error blink. will remain alive for ever. 
+    xTaskCreate(blinkErrors, "blinkErrors", 1000, 1+2+4+8+16, 1, NULL);
     //Boot melody
     xTaskCreate(melody_load, "melody_load", 1000, NULL, 1, NULL);
 
@@ -121,6 +123,7 @@ void mainTask() {
         }
         updateInfo(&current);
         updateInfoStat(&current, &averages);
+        setStatusBits(&current);
         printInfo(&current);
         displayScreen(&current);
         vTaskDelayUntil(&startTimeTicks, DELAY(1000));
@@ -135,6 +138,7 @@ void app_main(void) {
     initLEDs();
     initBuzzer();
     initDisplay();
+    initRGB_LED();
 
     xTaskCreatePinnedToCore(&mainTask, "MainTask", 100000, NULL, 1, NULL, 0);    
 }
