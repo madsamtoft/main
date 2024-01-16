@@ -1,5 +1,5 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef MAIN_H
+#define MAIN_H
 
 #include <stdio.h>
 #include <math.h>
@@ -59,9 +59,12 @@ typedef struct {
 } InfoStat;
 
 static SSD1306_t dev;
+static TickType_t startTimeTicks;
 
 void i2cConfig();
+void updateStat(float count, float value, Stat *stat);
+void updateInfoStat(Info *info, InfoStat *infoStat);
+void updateTick();
 void updateInfo(Info *info);
-void periodicRead(int time);
 
 #endif

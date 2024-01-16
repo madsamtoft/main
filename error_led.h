@@ -1,3 +1,6 @@
+#ifndef ERROR_LED_H
+#define ERROR_LED_H
+
 #include "main.h"
 
 #define LEDC_TIMER              LEDC_TIMER_0
@@ -14,13 +17,6 @@
 
 static int statusBits = 0;
 
-void initRGB_LED();
-void setRGB(int r, int g, int b);
-void callRGB(int index);
-void setStatusBits(Info *info);
-void resetStatusBits();
-void blinkErrors();
-
 enum ErrorCodes {
     ERROR_AIR_TMP,
     ERROR_SOIL_TMP,
@@ -28,3 +24,12 @@ enum ErrorCodes {
     ERROR_SOIL_HUM,
     ERROR_LIGHT_VAL
 };
+
+void initRGB_LED();
+void setRGB(int r, int g, int b);
+void callRGB(int index);
+void setStatusBits(Info *info);
+void resetStatusBits();
+void blinkErrors();
+
+#endif

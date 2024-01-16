@@ -3,6 +3,10 @@
 
 //Own libraries
 #include "main.h"
+#include "gpio.h"
+#include "buzzer.h"
+#include "error_led.h"
+#include "experiment.h"
 
 //Threshhold
 #define LOW_SOIL_HUM 670
@@ -25,14 +29,7 @@ enum screen {
     SOIL_SENSOR,        // 2
     AIR_SENSOR,         // 3
     LIGHT_SENSOR,       // 4
-};
-enum experiment {
-    EXP_5SEC,   // 0
-    EXP_1MIN,   // 1
-    EXP_5MIN,   // 2
-    EXP_30MIN,  // 3
-    EXP_1HOUR   // 4
-
+    MENU,               // 5
 };
 
 static char currentDisplay = OVERVIEW;
@@ -45,24 +42,17 @@ static bool blink = false;
 
 void initDisplay();
 void clearScreen();
+void updateCurrentDisplay(char display);
+
 void displayMenu(int select);
-void displayMenuExperiment(int select);
 void displayInfo(Info *info);
-void displayExperiment(Info *info, int expProg, int expTime);
-void displayExperimentAverage(Info *avg);
-void displayExperimentMin(Info *min);
-void displayExperimentMax(Info *max);
 void displaySoilInfo(Info *info);
 void displayAirInfo(Info *info);
 void displayLightInfo(Info *info);
 void displayExit();
 int exitSelect();
-void experimentSelect();
-Info getAvg(Info data[], int size);
-Info getMin(Info data[], int size);
-Info getMax(Info data[], int size);
-void experimentResultsSelect(Info *data, int size);
+
 void menuSelect();
-void displayScreen(Info *info);
+int displayScreen(Info *info);
 
 #endif
