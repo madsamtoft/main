@@ -56,7 +56,17 @@ void updateTick() {
     startTimeTicks = xTaskGetTickCount();
 }
 
-void mainTask() {
+void app_main(void) {
+    i2cConfig();
+    initSoil();
+    initLight();
+    initButtons();
+    initLEDs();
+    initBuzzer();
+    initDisplay();
+    initDisplayExp();
+    initRGB_LED();
+
     Info current;
     InfoStat averages;
     averages.count = 0;
@@ -77,19 +87,4 @@ void mainTask() {
         //printInfo(&current);
         vTaskDelayUntil(&startTimeTicks, DELAY(1000));
     }
-}
-
-void app_main(void) {
-    i2cConfig();
-    initSoil();
-    initLight();
-    initButtons();
-    initLEDs();
-    initBuzzer();
-    initDisplay();
-    initDisplayExp();
-    initRGB_LED();
-
-    mainTask();
-    //xTaskCreatePinnedToCore(&mainTask, "MainTask", 100000, NULL, 1, NULL, 0);    
 }
