@@ -79,7 +79,6 @@ int periodicRead(Info *exp, int time) { // Read and get average over a period of
         state = !state;
         // INFO
         updateInfo(&(exp[i]));
-        // printInfo(&(data[i]));
         displayExperiment(&(exp[i]), i, time);
         // Task Handling
         vTaskDelayUntil(&delayTicks, DELAY(1000));
