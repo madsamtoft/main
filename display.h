@@ -3,6 +3,7 @@
 
 //Own libraries
 #include "main.h"
+#include "bitmaps.h"
 #include "gpio.h"
 #include "buzzer.h"
 #include "error_led.h"
@@ -43,5 +44,13 @@ int exitSelect();
 
 void menuSelect();
 int displayScreen(Info *info);
+// Test bitmaps
+void displayBitmapGraph();
+void displayAboveGraph();
+
+// Boot logo
+void displaySmallPlant();
+void displayMediumPlant();
+void displayLargePlant();
 
 #endif

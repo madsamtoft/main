@@ -37,6 +37,7 @@ void play_tone(int freq_hz, int time_ms);
 float get_freq(float note, double octave);
 void play_note(double note, double octave, double beats);
 void melody_load();
+void melody_load_done();
 void melody_amogus();
 void melody_moonlight();
 void melody_error();

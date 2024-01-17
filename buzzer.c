@@ -58,14 +58,23 @@ void play_note(double note, double octave, double beats) {
 }
 
 void melody_load() {
-    float notes[] =   {C,D,E,0,C};
-    int octaves[] =   {3,3,3,0,4};
-    float lengths[] = {2,2,2,4,2};
+    // float notes[] =   {C,D,E,0,C};
+    // int octaves[] =   {3,3,3,0,4};
+    // float lengths[] = {2,2,2,4,2};
+
+    float notes[] =   {C,D,E};
+    int octaves[] =   {3,3,3};
+    float lengths[] = {2,2,2};
 
     int length = sizeof(octaves)/sizeof(int);
     for (int i = 0; i < length; i ++) {
         play_note(notes[i],octaves[i],lengths[i]/4);
     }
+    vTaskDelete(NULL);
+}
+
+void melody_load_done() {
+    play_note(C, 4, 0.5);
     vTaskDelete(NULL);
 }
 
