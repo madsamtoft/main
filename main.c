@@ -90,5 +90,6 @@ void app_main(void) {
     initDisplayExp();
     initRGB_LED();
 
-    xTaskCreatePinnedToCore(&mainTask, "MainTask", 100000, NULL, 1, NULL, 0);    
+    mainTask();
+    //xTaskCreatePinnedToCore(&mainTask, "MainTask", 100000, NULL, 1, NULL, 0);    
 }

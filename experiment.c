@@ -106,7 +106,7 @@ void experimentResultsSelect(Info data[], int size) {
     while (1) {
         switch (select) {
         case 0:
-            displayExperimentAverage(&avg);
+            displayExperimentAvg(&avg);
             break;
         case 1:
             displayExperimentMin(&min);
@@ -165,25 +165,26 @@ void displayExperiment(Info *info, int expProg, int expTime) {
 
 Info getAvg(Info data[], int size) {
     Info avg;
-    avg.airTmp = 0;
-    avg.soilTmp = 0;
-    avg.airHum = 0;
-    avg.soilHum = 0;
-    avg.lightVal = 0;
+
+    float airTmp = 0;
+    float soilTmp = 0;
+    float airHum = 0;
+    float soilHum = 0;
+    float lightVal = 0;
 
     for (int i = 0; i < size; i++) {
-        avg.airTmp += (data[i]).airTmp;
-        avg.soilTmp += (data[i]).soilTmp;
-        avg.airHum += (data[i]).airHum;
-        avg.soilHum += (data[i]).soilHum;
-        avg.lightVal += (data[i]).lightVal;
+        airTmp += (data[i]).airTmp;
+        soilTmp += (data[i]).soilTmp;
+        airHum += (data[i]).airHum;
+        soilHum += (data[i]).soilHum;
+        lightVal += (data[i]).lightVal;
     }
 
-    avg.airTmp = avg.airTmp / size;
-    avg.soilTmp = avg.soilTmp / size;
-    avg.airHum = avg.airHum / size;
-    avg.soilHum = avg.soilHum / size;
-    avg.lightVal = avg.lightVal / size;
+    avg.airTmp = airTmp / size;
+    avg.soilTmp = soilTmp / size;
+    avg.airHum = (int) airHum / size;
+    avg.soilHum = soilHum / size;
+    avg.lightVal = (int) lightVal / size;
 
     return avg;
 }
