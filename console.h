@@ -4,9 +4,9 @@
 //Own libraries
 #include "main.h"
 
-void printInfo(Info *info);
-void printData(Info data[], int length);
 void printStat(char *name, Stat stat);
 void printInfoStat(InfoStat *infoStat);
+void printInfo(Info *info);
+void printForever(Info data, int count);
 
 #endif
