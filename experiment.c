@@ -100,6 +100,22 @@ void experimentResultsSelect(Info data[], int size) {
     Info avg = getAvg(data, size);
     Info min = getMin(data, size);
     Info max = getMax(data, size);
+
+    // uint8_t *bitmapAirTmp = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
+    // uint8_t *bitmapSoilTmp = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
+    // uint8_t *bitmapAirHum = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
+    // uint8_t *bitmapSoilHum = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
+    // uint8_t *bitmapLight = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
+    uint8_t bitmapLight[BITMAP_LENGTH] = {0};
+
+    // bitmapAirTmp = renderBitmapAirTmp(data, size);
+    // bitmapSoilTmp = renderBitmapSoilTmp(data, size);
+    // bitmapAirHum = renderBitmapAirHum(data, size);
+    // bitmapSoilHum = renderBitmapSoilHum(data, size);
+    renderBitmapLight(bitmapLight, data, size);
+
+
+
     int select = 0;
     clearScreen(dev);
     while (1) {
@@ -113,14 +129,23 @@ void experimentResultsSelect(Info data[], int size) {
         case 2:
             displayExperimentMax(&max);
             break;
+        case 3:
+            graphBitmap(&dev, bitmapLight);
+            break;
         }
         if (getEnt()) {
+            // free(bitmapAirTmp);
+            // free(bitmapSoilTmp);
+            // free(bitmapAirHum);
+            // free(bitmapSoilHum);
+            free(bitmapLight);
             return;
         }
         if (getSel()) {
             resetBtns();
+            clearScreen();
             select++;
-            select %= 3;
+            select %= 4;
             vTaskDelay(DELAY(100));
         }
     }
