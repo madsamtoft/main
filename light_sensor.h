@@ -6,5 +6,6 @@
 
 void initLight();
 void updateLight(Info *light);
+float lightPercentage(Info *light);
 
 #endif

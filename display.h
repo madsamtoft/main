@@ -7,6 +7,9 @@
 #include "buzzer.h"
 #include "error_led.h"
 #include "experiment.h"
+#include "soil_sensor.h"
+#include "light_sensor.h"
+#include "air_sensor.h"
 
 //Threshhold
 #define LOW_SOIL_HUM 670

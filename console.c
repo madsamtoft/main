@@ -19,6 +19,6 @@ void printForever(Info data, int count) {
     printf("%.1f;", data.airTmp);
     printf("%.1f;", data.airHum);
     printf("%.1f;", data.soilTmp);
-    printf("%d;", data.soilHum);
-    printf("%d;\n", data.lightVal);
+    printf("%.1f;", soilPercentage(&data));
+    printf("%.1f;\n", lightPercentage(&data));
 }

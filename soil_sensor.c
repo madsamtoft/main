@@ -22,3 +22,7 @@ void updateSoil(Info *soil) {
         soil -> soilTmp = -1;
     }    
 }
+
+float soilPercentage(Info *soil) {
+    return ((soil -> soilHum - 300) * 100.) / (1023-300);
+}

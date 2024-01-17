@@ -6,5 +6,6 @@
 
 void initSoil();
 void updateSoil(Info *soil);
+float soilPercentage(Info *soil);
 
 #endif

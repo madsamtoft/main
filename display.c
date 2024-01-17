@@ -42,8 +42,8 @@ void displayInfo(Info *info) { // Method to display current info values
     sprintf(airTemp,        "Air  tmp: %5.1fC", info -> airTmp);
     sprintf(soilTemp,       "Soil tmp: %5.1fC", info -> soilTmp);
     sprintf(airHumidity,    "Air  hum: %5.1f%%", info -> airHum);
-    sprintf(soilHumidity,   "Soil hum: %6d", info -> soilHum);
-    sprintf(lightLevel,     "Lght lvl: %6d", info -> lightVal);
+    sprintf(soilHumidity,   "Soil hum: %5.1f%%", soilPercentage(info));
+    sprintf(lightLevel,     "Lght lvl: %5.1f%%", lightPercentage(info));
 
     ssd1306_display_text(&dev, 1, "Overview:", 9, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, airTmpError && blink);
@@ -65,7 +65,7 @@ void displaySoilInfo(Info *info) {
     char soilHumidityStat[17];
 
     sprintf(soilTemp,         "Soil tmp: %5.1fC", info -> soilTmp);
-    sprintf(soilHumidity,     "Soil hum: %6d", info -> soilHum);
+    sprintf(soilHumidity,     "Soil hum: %5.1f%%", soilPercentage(info));
     sprintf(soilTempStat,     "Tmp Stat: %6s", soilTmpHigh ? "HIGH" : (soilTmpLow ? "LOW" : "OK"));
     sprintf(soilHumidityStat, "Hum Stat: %6s", soilHumHigh ? "HIGH" : (soilHumLow ? "LOW" : "OK"));
 
@@ -105,7 +105,7 @@ void displayLightInfo(Info *info) {
     char lightLevel[17];
     char lightLevelStat[17];
 
-    sprintf(lightLevel,     "Lght lvl: %6d", info -> lightVal);
+    sprintf(lightLevel,     "Lght lvl: %5.1f%%", lightPercentage(info));
     sprintf(lightLevelStat, "Lght Stat: %5s", lightLvlLow ? "LOW" : "OK");
 
     ssd1306_display_text(&dev, 1, "Light info:", 11, false);
