@@ -25,10 +25,10 @@
 
 enum screen {
     OVERVIEW,           // 0
-    EXPERIMENT_MENU,    // 1
-    SOIL_SENSOR,        // 2
-    AIR_SENSOR,         // 3
-    LIGHT_SENSOR,       // 4
+    SOIL_SENSOR,        // 1
+    AIR_SENSOR,         // 2
+    LIGHT_SENSOR,       // 3
+    EXPERIMENT_MENU,    // 4
     MENU,               // 5
 };
 

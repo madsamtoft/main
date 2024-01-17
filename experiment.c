@@ -11,7 +11,7 @@ void periodicRead(int time) { // Read and get average over a period of time
     printf("Reading data for %d seconds:\n", time);
 
     // LED's
-    gpio_set_level(GPIO_LED_RED, 1);
+    int state = 1;
     resetStatusBits(); // Reset error LED
     
     // Prepare Array
@@ -30,7 +30,9 @@ void periodicRead(int time) { // Read and get average over a period of time
                 startTimeTicks = xTaskGetTickCount();
             }
         }
-
+        // Make LED flash
+        gpio_set_level(GPIO_LED_RED, state);
+        state = !state;
         // INFO
         updateInfo(&(data[i]));
         // printInfo(&(data[i]));
@@ -95,14 +97,14 @@ void displayExperimentAverage(Info *avg) {
     char airHumidity[17];
     char soilHumidity[17];
     char lightLevel[17];
-
+    
     sprintf(airTemp,        "Air  tmp: %5.1fC", avg -> airTmp);
     sprintf(soilTemp,       "Soil tmp: %5.1fC", avg -> soilTmp);
     sprintf(airHumidity,    "Air  hum: %5.1f%%", avg -> airHum);
     sprintf(soilHumidity,   "Soil hum: %6d", avg -> soilHum);
     sprintf(lightLevel,     "Lght lvl: %6d", avg -> lightVal);
 
-    ssd1306_display_text(&dev, 1, "Exp. Average:", 13, false);
+    ssd1306_display_text(&dev, 1, "Average Values:", 15, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, false);
     ssd1306_display_text(&dev, 3, soilTemp, 16, false);
     ssd1306_display_text(&dev, 4, airHumidity, 16, false);
@@ -277,7 +279,6 @@ void experimentResultsSelect(Info data[], int size) {
     Info avg = getAvg(data, size);
     Info min = getMin(data, size);
     Info max = getMax(data, size);
-
     int select = 0;
     clearScreen(dev);
     while (1) {
@@ -297,12 +298,9 @@ void experimentResultsSelect(Info data[], int size) {
         }
         if (getSel()) {
             resetBtns();
-            clearScreen(dev);
             select++;
             select %= 3;
             vTaskDelay(DELAY(100));
         }
     }
 }
-
-

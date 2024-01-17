@@ -90,14 +90,5 @@ void app_main(void) {
     initDisplayExp();
     initRGB_LED();
 
-    Info current;
-    InfoStat averages;
-    averages.count = 0;
-
-    // Error blink. will remain alive for ever. 
-    xTaskCreate(blinkErrors, "blinkErrors", 1000, 1+2+4+8+16, 1, NULL);
-    //Boot melody
-    xTaskCreate(melody_load, "melody_load", 1000, NULL, 1, NULL);
-
     xTaskCreatePinnedToCore(&mainTask, "MainTask", 100000, NULL, 1, NULL, 0);    
 }

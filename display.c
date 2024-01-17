@@ -19,10 +19,10 @@ void updateCurrentDisplay(char display) {
 void displayMenu(int select) { // Method to display the menu
     ssd1306_display_text(&dev, 1, "Menu:", 5, false);
     ssd1306_display_text(&dev, 2, "Overview", 8, (select == 0));
-    ssd1306_display_text(&dev, 3, "Run Experiment", 14, (select == 1));
-    ssd1306_display_text(&dev, 4, "Soil Sensor", 11, (select == 2));
-    ssd1306_display_text(&dev, 5, "Air Sensor", 10, (select == 3));
-    ssd1306_display_text(&dev, 6, "Light Sensor", 12, (select == 4));
+    ssd1306_display_text(&dev, 3, "Soil Sensor", 11, (select == 1));
+    ssd1306_display_text(&dev, 4, "Air Sensor", 10, (select == 2));
+    ssd1306_display_text(&dev, 5, "Light Sensor", 12, (select == 3));
+    ssd1306_display_text(&dev, 6, "Run Experiment", 14, (select == 4));
 }
 
 void displayInfo(Info *info) { // Method to display current info values    
@@ -158,18 +158,20 @@ void menuSelect() {
 }
 
 int displayScreen(Info *info) {
-    if (getEnt()) {
+    if (getEnt() && currentDisplay != EXPERIMENT_MENU) {
         resetBtns();
         clearScreen();
         currentDisplay = MENU;
+    } else if (getSel() && currentDisplay != MENU) {
+        resetBtns();
+        clearScreen();
+        currentDisplay ++;
+        currentDisplay %= 4;
     }
-
     switch (currentDisplay) {
     case OVERVIEW:
         displayInfo(info);
         break;
-    case EXPERIMENT_MENU:
-        return 1; // Return to main
     case SOIL_SENSOR:
         displaySoilInfo(info);
         break;
@@ -179,6 +181,8 @@ int displayScreen(Info *info) {
     case LIGHT_SENSOR:
         displayLightInfo(info);
         break;
+    case EXPERIMENT_MENU:
+        return 1; // Return to main
     case MENU:
         menuSelect();
         break;
