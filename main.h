@@ -35,36 +35,34 @@
 //Macros
 #define DELAY(ms) (ms) / portTICK_PERIOD_MS
 
+//Threshhold
+#define LOW_SOIL_HUM 21
+#define HIGH_SOIL_HUM 80
+
+#define LOW_SOIL_TMP 18
+#define HIGH_SOIL_TMP 25 // Same as air temp 
+
+#define LOW_AIR_HUM 20 
+#define HIGH_AIR_HUM 80 // Between 60 and 80
+
+#define LOW_AIR_TMP 18
+#define HIGH_AIR_TMP 25 // Should be 24
+
+#define LOW_LIGHT 25
+
 typedef struct {
     float airTmp;
     float airHum;
-    short soilHum;
+    float soilHum;
     float soilTmp;
-    short lightVal;
+    float lightVal;
 } Info;
-
-typedef struct {
-    float avg;
-    float min;
-    float max;
-} Stat;
-
-typedef struct {
-    Stat airTmp;
-    Stat airHum;
-    Stat soilHum;
-    Stat soilTmp;
-    Stat lightVal;
-    long count;
-} InfoStat;
 
 static SSD1306_t dev;
 static TickType_t startTimeTicks;
 
 void i2cConfig();
-void updateStat(float count, float value, Stat *stat);
-void updateInfoStat(Info *info, InfoStat *infoStat);
-void updateTick();
 void updateInfo(Info *info);
+void updateTick();
 
 #endif

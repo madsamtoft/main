@@ -16,6 +16,7 @@
 #define BUZZ_FREQUENCY          (1000) // Frequency in Hertz. Set frequency at 1 kHz
 
 #define C 16.352
+#define Db 17.324
 #define D 18.354
 #define Eb 19.445
 #define E 20.602
@@ -36,7 +37,9 @@ void play_tone(int freq_hz, int time_ms);
 float get_freq(float note, double octave);
 void play_note(double note, double octave, double beats);
 void melody_load();
+void melody_load_done();
 void melody_amogus();
+void melody_moonlight();
 void melody_error();
 void sfx_1();
 void sfx_2();

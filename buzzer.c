@@ -58,9 +58,13 @@ void play_note(double note, double octave, double beats) {
 }
 
 void melody_load() {
-    float notes[] =   {C,D,E,0,C};
-    int octaves[] =   {3,3,3,0,4};
-    float lengths[] = {2,2,2,4,2};
+    // float notes[] =   {C,D,E,0,C};
+    // int octaves[] =   {3,3,3,0,4};
+    // float lengths[] = {2,2,2,4,2};
+
+    float notes[] =   {C,D,E};
+    int octaves[] =   {3,3,3};
+    float lengths[] = {2,2,2};
 
     int length = sizeof(octaves)/sizeof(int);
     for (int i = 0; i < length; i ++) {
@@ -69,10 +73,74 @@ void melody_load() {
     vTaskDelete(NULL);
 }
 
+void melody_load_done() {
+    play_note(C, 4, 0.5);
+    vTaskDelete(NULL);
+}
+
 void melody_amogus() {
     float notes[] =   {C,Eb,F,Fb,F,Eb,C,0,Gb,Eb,C,0};
     int octaves[] =   {3,3, 3,3, 3,3, 3,0,2, 3, 3,0};
     float lengths[] = {4,4, 4,4, 4,4, 4,8,2, 2, 4,4};
+
+    int length = sizeof(octaves)/sizeof(int);
+    for (int i = 0; i < length; i ++) {
+        play_note(notes[i],octaves[i],lengths[i]/4);
+    }
+    vTaskDelete(NULL);
+}
+
+void melody_moonlight() {
+    float notes[] =   {A,D,F,
+                       A,D,F,
+                       A,D,F,
+                       A,D,F,
+                       A,D,F,
+                       A,D,F,
+                       A,D,F,
+                       A,D,F,
+                       B,D,F,
+                       B,D,F,
+                       B,Eb,G,
+                       B,Eb,G,
+                       A,D,F,
+                       A,D,F,
+                       A,Db,E,
+                       A,Db,E,D};
+    
+    int octaves[] =   {3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4};
+    
+    float lengths[] = {6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6};
 
     int length = sizeof(octaves)/sizeof(int);
     for (int i = 0; i < length; i ++) {

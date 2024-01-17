@@ -32,11 +32,13 @@ void experimentSelect() {
             case EXP_1HOUR:
                 time = 3600;
                 break;
+            case EXP_FOREVER:
+                foreverRead();
+                break;
             }
             // Show results of experiment
             exp = (Info *) malloc(sizeof(Info) * time);
-            if(periodicRead(exp, time)) {
-                printData(exp, time);
+            if(time > 0 && periodicRead(exp, time)) {
                 experimentResultsSelect(exp, time);
             }
             free(exp);
@@ -49,7 +51,7 @@ void experimentSelect() {
         if (getSel()) {
             resetBtns();
             select++;
-            select %= (int) sizeof(enum experiment) + 1; 
+            select %= 6; 
             vTaskDelay(DELAY(100));
         }
     }
@@ -57,7 +59,7 @@ void experimentSelect() {
 
 int periodicRead(Info *exp, int time) { // Read and get average over a period of time
     printf("Reading data for %d seconds:\n", time);
-
+    printf("Time;airTMP;soilTMP;airHUM;soilHUM;light\n");
     // LED's
     int state = 1;
     resetStatusBits(); // Reset error LED
@@ -79,6 +81,7 @@ int periodicRead(Info *exp, int time) { // Read and get average over a period of
         state = !state;
         // INFO
         updateInfo(&(exp[i]));
+        printForever(exp[i], i);
         displayExperiment(&(exp[i]), i, time);
         // Task Handling
         vTaskDelayUntil(&delayTicks, DELAY(1000));
@@ -94,6 +97,35 @@ int periodicRead(Info *exp, int time) { // Read and get average over a period of
     } else {
         return 0;
     }
+}
+
+void foreverRead() {
+    printf("Reading data until stopped:\n");
+    printf("Time;airTMP;soilTMP;airHUM;soilHUM;light\n");
+    int state = 1;
+    int count = 0;
+    Info exp;
+    resetStatusBits(); // Reset error LED
+    // Task Handling
+    TickType_t delayTicks = xTaskGetTickCount();
+    vTaskDelay(DELAY(1000));
+    
+    while (getEnt() == 0) {
+        // Make LED flash
+        gpio_set_level(GPIO_LED_RED, state);
+        state = !state;
+        // INFO
+        updateInfo(&(exp));
+        printForever(exp, count);
+        displayForever(&(exp), count);
+        // Task Handling
+        vTaskDelayUntil(&delayTicks, DELAY(1000));
+        count++;
+    }
+    // LED's
+    gpio_set_level(GPIO_LED_RED, 0);
+    // Sound Effect
+    xTaskCreate(sfx_3, "sfx_3", 1000, NULL, 1, NULL);
 }
 
 void experimentResultsSelect(Info data[], int size) {
@@ -158,6 +190,35 @@ void displayMenuExperiment(int select) {
     ssd1306_display_text(&dev, 4, " * 5 minutes", 12, (select == EXP_5MIN));
     ssd1306_display_text(&dev, 5, " * 30 minutes", 12, (select == EXP_30MIN));
     ssd1306_display_text(&dev, 6, " * 1 hour", 9, (select == EXP_1HOUR));
+    ssd1306_display_text(&dev, 7, " * Forever", 10, (select == EXP_FOREVER));
+}
+
+void displayForever(Info *info, int expProg) {
+    char time[24];
+    char airTemp[17];
+    char soilTemp[17];
+    char airHumidity[17];
+    char soilHumidity[17];
+    char lightLevel[17];
+
+    int timeHr = expProg/3600;
+    expProg %= 3600;
+    int timeMin = expProg/60;
+    expProg %= 60;
+
+    sprintf(time,           "Time:   %02d:%02d:%02d", timeHr, timeMin, expProg);
+    sprintf(airTemp,        "Air  tmp: %5.1fC", info -> airTmp);
+    sprintf(soilTemp,       "Soil tmp: %5.1fC", info -> soilTmp);
+    sprintf(airHumidity,    "Air  hum: %5.1f%%", info -> airHum);
+    sprintf(soilHumidity,   "Soil hum: %5.1f%%", info -> soilHum);
+    sprintf(lightLevel,     "Lght lvl: %5.1f%%", info -> lightVal);
+
+    ssd1306_display_text(&dev, 1, time, 16, false);
+    ssd1306_display_text(&dev, 2, airTemp, 16, false);
+    ssd1306_display_text(&dev, 3, soilTemp, 16, false);
+    ssd1306_display_text(&dev, 4, airHumidity, 16, false);
+    ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
+    ssd1306_display_text(&dev, 6, lightLevel, 16, false);
 }
 
 void displayExperiment(Info *info, int expProg, int expTime) {
@@ -172,12 +233,15 @@ void displayExperiment(Info *info, int expProg, int expTime) {
     short timeLeftMin = timeLeft / 60;
     short percent = (short) ((expProg * 100.) / expTime);
 
-    sprintf(experiment,     "Prog: %3d%%  %3d%c", percent, (timeLeft < 60 ? timeLeft : timeLeftMin), (timeLeft < 60 ? 's' : 'm'));
+    short displayTime = timeLeft < 60 ? timeLeft : timeLeftMin;
+    char displayChar = timeLeft < 60 ? 's' : 'm';
+
+    sprintf(experiment,     "Prog: %3d%%  %3d%c", percent, displayTime, displayChar);
     sprintf(airTemp,        "Air  tmp: %5.1fC", info -> airTmp);
     sprintf(soilTemp,       "Soil tmp: %5.1fC", info -> soilTmp);
     sprintf(airHumidity,    "Air  hum: %5.1f%%", info -> airHum);
-    sprintf(soilHumidity,   "Soil hum: %6d", info -> soilHum);
-    sprintf(lightLevel,     "Lght lvl: %6d", info -> lightVal);
+    sprintf(soilHumidity,   "Soil hum: %5.1f%%", info -> soilHum);
+    sprintf(lightLevel,     "Lght lvl: %5.1f%%", info -> lightVal);
 
     ssd1306_display_text(&dev, 1, experiment, 16, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, false);
@@ -273,8 +337,8 @@ void displayExperimentAvg(Info *avg) {
     sprintf(airTemp,        "Air  tmp: %5.1fC", avg -> airTmp);
     sprintf(soilTemp,       "Soil tmp: %5.1fC", avg -> soilTmp);
     sprintf(airHumidity,    "Air  hum: %5.1f%%", avg -> airHum);
-    sprintf(soilHumidity,   "Soil hum: %6d", avg -> soilHum);
-    sprintf(lightLevel,     "Lght lvl: %6d", avg -> lightVal);
+    sprintf(soilHumidity,   "Soil hum: %5.1f%%", avg -> soilHum);
+    sprintf(lightLevel,     "Lght lvl: %5.1f%%", avg -> lightVal);
 
     ssd1306_display_text(&dev, 1, "Average Values:", 15, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, false);
@@ -294,8 +358,8 @@ void displayExperimentMin(Info *min) {
     sprintf(airTemp,        "Air  tmp: %5.1fC", min -> airTmp);
     sprintf(soilTemp,       "Soil tmp: %5.1fC", min -> soilTmp);
     sprintf(airHumidity,    "Air  hum: %5.1f%%", min -> airHum);
-    sprintf(soilHumidity,   "Soil hum: %6d", min -> soilHum);
-    sprintf(lightLevel,     "Lght lvl: %6d", min -> lightVal);
+    sprintf(soilHumidity,   "Soil hum: %5.1f%%", min -> soilHum);
+    sprintf(lightLevel,     "Lght lvl: %5.1f%%", min -> lightVal);
 
     ssd1306_display_text(&dev, 1, "Minimum Values:", 15, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, false);
@@ -315,8 +379,8 @@ void displayExperimentMax(Info *max) {
     sprintf(airTemp,        "Air  tmp: %5.1fC", max -> airTmp);
     sprintf(soilTemp,       "Soil tmp: %5.1fC", max -> soilTmp);
     sprintf(airHumidity,    "Air  hum: %5.1f%%", max -> airHum);
-    sprintf(soilHumidity,   "Soil hum: %6d", max -> soilHum);
-    sprintf(lightLevel,     "Lght lvl: %6d", max -> lightVal);
+    sprintf(soilHumidity,   "Soil hum: %5.1f%%", max -> soilHum);
+    sprintf(lightLevel,     "Lght lvl: %5.1f%%", max -> lightVal);
 
     ssd1306_display_text(&dev, 1, "Maximum Values:", 15, false);
     ssd1306_display_text(&dev, 2, airTemp, 16, false);
