@@ -14,15 +14,11 @@ void updateSoil(Info *soil) {
     ESP_ERROR_CHECK(adafruit_stemma_soil_sensor_shared_i2c_init());
 
     if (ret_moist == ESP_OK && ret_temp == ESP_OK) {
-        soil -> soilHum = moisture_value;
+        soil -> soilHum = (moisture_value * 100.) / (1023);
         soil -> soilTmp = temperature_value;
     } else {
         printf("Error reading soil data\n");
         soil -> soilHum = -1;
         soil -> soilTmp = -1;
     }    
-}
-
-float soilPercentage(Info *soil) {
-    return ((soil -> soilHum - 300) * 100.) / (1023-300);
 }

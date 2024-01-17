@@ -3,6 +3,8 @@
 
 //Own libraries
 #include "main.h"
+#include "soil_sensor.h"
+#include "light_sensor.h"
 
 typedef struct {
     float avg;

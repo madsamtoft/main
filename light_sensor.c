@@ -7,9 +7,5 @@ void initLight() {
 }
 
 void updateLight(Info *light) {
-    light -> lightVal = adc1_get_raw(ADC1_CHANNEL_0);
-}
-
-float lightPercentage(Info *light) {
-    return (light -> lightVal * 100.) / 4095;
+    light -> lightVal = (adc1_get_raw(ADC1_CHANNEL_0) * 100.) /4095;
 }
