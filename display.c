@@ -51,6 +51,7 @@ void displayInfo(Info *info) { // Method to display current info values
     ssd1306_display_text(&dev, 4, airHumidity, 16, airHumError && blink);
     ssd1306_display_text(&dev, 5, soilHumidity, 16, soilHumError && blink);
     ssd1306_display_text(&dev, 6, lightLevel, 16, lightError && blink);
+    ssd1306_clear_line(&dev, 7, false);
 }
 
 void displaySoilInfo(Info *info) {
@@ -192,4 +193,16 @@ int displayScreen(Info *info) {
     }
     updateTick();
     return 0;
+}
+
+void displaySmallPlant(){
+    ssd1306_bitmaps(&dev, 44, 16, &smallplant, 40, 48, false);
+}
+
+void displayMediumPlant(){
+    ssd1306_bitmaps(&dev, 44, 16, &mediumplant, 40, 48, false);
+}
+
+void displayLargePlant(){
+    ssd1306_bitmaps(&dev, 44, 16, &largeplant, 40, 48, false);
 }

@@ -9,6 +9,7 @@
 #include "buzzer.h"
 #include "gpio.h"
 #include "error_led.h"
+#include "bitmaps.h"
 
 void i2cConfig() {
     i2c_config_t conf;
@@ -60,12 +61,17 @@ void mainTask() {
     Info current;
     InfoStat averages;
     averages.count = 0;
-
+    
+    displaySmallPlant();
     // Error blink. will remain alive for ever. 
     xTaskCreate(blinkErrors, "blinkErrors", 1000, 1+2+4+8+16, 1, NULL);
     //Boot melody
     xTaskCreate(melody_load, "melody_load", 1000, NULL, 1, NULL);
-
+    displayMediumPlant();
+    displayLargePlant();
+    xTaskCreate(melody_load_done, "melody_load_done", 1000, NULL, 1, NULL);
+    vTaskDelay(DELAY(500));
+    
     updateTick();
     while (1) {
         updateInfo(&current);
