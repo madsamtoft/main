@@ -29,29 +29,6 @@ void updateInfo(Info *info) {
     updateLight(info);
 }
 
-void updateStat(float count, float value, Stat *stat) {
-    if (count == 0) {
-        stat->avg = value;
-        stat->min = value;
-        stat->max = value;
-        return;
-    }
-    float a = count / (count + 1);
-    float b = 1.0 / (count + 1);
-    stat->avg = stat->avg * a + value * b;
-    stat->min = fmin(stat->min, value);
-    stat->max = fmax(stat->max, value);
-}
-
-void updateInfoStat(Info *info, InfoStat *infoStat) {
-    updateStat(infoStat->count, info->airTmp, &(infoStat->airTmp));
-    updateStat(infoStat->count, info->airHum, &(infoStat->airHum));
-    updateStat(infoStat->count, info->soilHum, &(infoStat->soilHum));
-    updateStat(infoStat->count, info->soilTmp, &(infoStat->soilTmp));
-    updateStat(infoStat->count, info->lightVal, &(infoStat->lightVal));
-    infoStat->count ++;
-}
-
 void updateTick() {
     startTimeTicks = xTaskGetTickCount();
 }

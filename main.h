@@ -43,28 +43,11 @@ typedef struct {
     short lightVal;
 } Info;
 
-typedef struct {
-    float avg;
-    float min;
-    float max;
-} Stat;
-
-typedef struct {
-    Stat airTmp;
-    Stat airHum;
-    Stat soilHum;
-    Stat soilTmp;
-    Stat lightVal;
-    long count;
-} InfoStat;
-
 static SSD1306_t dev;
 static TickType_t startTimeTicks;
 
 void i2cConfig();
-void updateStat(float count, float value, Stat *stat);
-void updateInfoStat(Info *info, InfoStat *infoStat);
-void updateTick();
 void updateInfo(Info *info);
+void updateTick();
 
 #endif
