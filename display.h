@@ -8,21 +8,10 @@
 #include "buzzer.h"
 #include "error_led.h"
 #include "experiment.h"
+#include "soil_sensor.h"
+#include "light_sensor.h"
+#include "air_sensor.h"
 
-//Threshhold
-#define LOW_SOIL_HUM 670
-#define HIGH_SOIL_HUM 900
-
-#define LOW_SOIL_TMP 10
-#define HIGH_SOIL_TMP 30
-
-#define LOW_AIR_HUM 20 // Might not be needed
-#define HIGH_AIR_HUM 40
-
-#define LOW_AIR_TMP 10
-#define HIGH_AIR_TMP 30
-
-#define LOW_LIGHT 900
 
 enum screen {
     OVERVIEW,           // 0

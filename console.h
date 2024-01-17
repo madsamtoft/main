@@ -3,10 +3,28 @@
 
 //Own libraries
 #include "main.h"
+#include "soil_sensor.h"
+#include "light_sensor.h"
 
-void printInfo(Info *info);
-void printData(Info data[], int length);
+typedef struct {
+    float avg;
+    float min;
+    float max;
+} Stat;
+
+typedef struct {
+    Stat airTmp;
+    Stat airHum;
+    Stat soilHum;
+    Stat soilTmp;
+    Stat lightVal;
+    long count;
+} InfoStat;
+
+void updateStat(float count, float value, Stat *stat);
+void updateInfoStat(Info *info, InfoStat *infoStat);
 void printStat(char *name, Stat stat);
 void printInfoStat(InfoStat *infoStat);
+void printForever(Info data, int count);
 
 #endif
