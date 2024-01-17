@@ -165,13 +165,11 @@ void displayExperiment(Info *info, int expProg, int expTime) {
 
 Info getAvg(Info data[], int size) {
     Info avg;
-
     float airTmp = 0;
     float soilTmp = 0;
     float airHum = 0;
     float soilHum = 0;
     float lightVal = 0;
-
     for (int i = 0; i < size; i++) {
         airTmp += (data[i]).airTmp;
         soilTmp += (data[i]).soilTmp;
@@ -179,13 +177,11 @@ Info getAvg(Info data[], int size) {
         soilHum += (data[i]).soilHum;
         lightVal += (data[i]).lightVal;
     }
-
     avg.airTmp = airTmp / size;
     avg.soilTmp = soilTmp / size;
     avg.airHum = (int) airHum / size;
     avg.soilHum = soilHum / size;
     avg.lightVal = (int) lightVal / size;
-
     return avg;
 }
 
@@ -196,7 +192,6 @@ Info getMin(Info data[], int size) {
     min.airHum = data[0].airHum;
     min.soilHum = data[0].soilHum;
     min.lightVal = data[0].lightVal;
-
     for(int i = 0; i < size; i++) {
         if(data[i].airTmp < min.airTmp) {
             min.airTmp = (data[i]).airTmp;
@@ -214,7 +209,6 @@ Info getMin(Info data[], int size) {
             min.lightVal = (data[i]).lightVal;
         }
     }
-
     return min;
 }
 
@@ -225,7 +219,6 @@ Info getMax(Info data[], int size) {
     max.airHum = data[0].airHum;
     max.soilHum = data[0].soilHum;
     max.lightVal = data[0].lightVal;
-
     for (int i = 0; i < size; i++) {
         if(data[i].airTmp > max.airTmp) {
             max.airTmp = data[i].airTmp;
@@ -243,7 +236,6 @@ Info getMax(Info data[], int size) {
             max.lightVal = data[i].lightVal;
         }
     }
-
     return max;
 }
 
