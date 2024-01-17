@@ -16,18 +16,17 @@ enum experiment {
 };
 
 void initDisplayExp();
-void periodicRead(int time);
+void experimentSelect();
+int periodicRead(Info *exp, int time);
+void experimentResultsSelect(Info *data, int size);
 void displayMenuExperiment(int select);
 void displayExperiment(Info *info, int expProg, int expTime);
-void displayExperimentAverage(Info *avg);
-void displayExperimentMin(Info *min);
-void displayExperimentMax(Info *max);
-
-void experimentSelect();
 Info getAvg(Info data[], int size);
 Info getMin(Info data[], int size);
 Info getMax(Info data[], int size);
-void experimentResultsSelect(Info *data, int size);
+void displayExperimentAvg(Info *avg);
+void displayExperimentMin(Info *min);
+void displayExperimentMax(Info *max);
 
 
 

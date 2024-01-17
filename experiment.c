@@ -7,18 +7,62 @@ void initDisplayExp() {
     ssd1306_contrast(&dev, 0xff);
 }
 
-void periodicRead(int time) { // Read and get average over a period of time
+void experimentSelect() {
+    Info *exp;
+    int time = 0;
+    int select = 0;
+    while (1) {
+        displayMenuExperiment(select);
+        if (getEnt()) {
+            resetBtns();
+            clearScreen();
+            switch (select) {
+            case EXP_5SEC:
+                time = 5;
+                break;
+            case EXP_1MIN:
+                time = 60;
+                break;
+            case EXP_5MIN:
+                time = 300;
+                break;
+            case EXP_30MIN:
+                time = 1800;
+                break;
+            case EXP_1HOUR:
+                time = 3600;
+                break;
+            }
+            // Show results of experiment
+            exp = (Info *) malloc(sizeof(Info) * time);
+            if(periodicRead(exp, time)) {
+                // printData(exp, time);
+                experimentResultsSelect(exp, time);
+            }
+            free(exp);
+            // Return to overview
+            clearScreen();
+            updateCurrentDisplay(OVERVIEW);
+            updateTick();
+            return;
+        }
+        if (getSel()) {
+            resetBtns();
+            select++;
+            select %= (int) sizeof(enum experiment) + 1; 
+            vTaskDelay(DELAY(100));
+        }
+    }
+}
+
+int periodicRead(Info *exp, int time) { // Read and get average over a period of time
     printf("Reading data for %d seconds:\n", time);
 
     // LED's
     int state = 1;
     resetStatusBits(); // Reset error LED
-    
-    // Prepare Array
-    Info *data = (Info *) malloc(sizeof(Info) * time);
-
     // Task Handling
-    TickType_t startTimeTicks = xTaskGetTickCount();
+    TickType_t delayTicks = xTaskGetTickCount();
 
     int i;
     for (i = 0; i < time; i++) {
@@ -27,32 +71,60 @@ void periodicRead(int time) { // Read and get average over a period of time
             if (exitSelect()) {
                 break;
             } else {
-                startTimeTicks = xTaskGetTickCount();
+                delayTicks = xTaskGetTickCount();
             }
         }
         // Make LED flash
         gpio_set_level(GPIO_LED_RED, state);
         state = !state;
         // INFO
-        updateInfo(&(data[i]));
+        updateInfo(&(exp[i]));
         // printInfo(&(data[i]));
-        displayExperiment(&(data[i]), i, time);
-
+        displayExperiment(&(exp[i]), i, time);
         // Task Handling
-        vTaskDelayUntil(&startTimeTicks, DELAY(1000));
+        vTaskDelayUntil(&delayTicks, DELAY(1000));
     }
     // LED's
     gpio_set_level(GPIO_LED_RED, 0);
-
     // Sound Effect
     xTaskCreate(sfx_3, "sfx_3", 1000, NULL, 1, NULL);
-
-    if(i == (time)) {
-        displayExperiment(&(data[time - 1]), time, time);
-        printData(data, time);
-        experimentResultsSelect(data, time);
+    // If experiment was stopped early we return 0, otherwise 1
+    if(i == time) {
+        displayExperiment(&(exp[time - 1]), time, time);
+        return 1;
+    } else {
+        return 0;
     }
-    free(data); // Maybe needs to be moved if we want to use the array more
+}
+
+void experimentResultsSelect(Info data[], int size) {
+    Info avg = getAvg(data, size);
+    Info min = getMin(data, size);
+    Info max = getMax(data, size);
+    int select = 0;
+    clearScreen(dev);
+    while (1) {
+        switch (select) {
+        case 0:
+            displayExperimentAverage(&avg);
+            break;
+        case 1:
+            displayExperimentMin(&min);
+            break;
+        case 2:
+            displayExperimentMax(&max);
+            break;
+        }
+        if (getEnt()) {
+            return;
+        }
+        if (getSel()) {
+            resetBtns();
+            select++;
+            select %= 3;
+            vTaskDelay(DELAY(100));
+        }
+    }
 }
 
 void displayMenuExperiment(int select) {
@@ -89,107 +161,6 @@ void displayExperiment(Info *info, int expProg, int expTime) {
     ssd1306_display_text(&dev, 4, airHumidity, 16, false);
     ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
     ssd1306_display_text(&dev, 6, lightLevel, 16, false);
-}
-
-void displayExperimentAverage(Info *avg) {  
-    char airTemp[17];
-    char soilTemp[17];
-    char airHumidity[17];
-    char soilHumidity[17];
-    char lightLevel[17];
-    
-    sprintf(airTemp,        "Air  tmp: %5.1fC", avg -> airTmp);
-    sprintf(soilTemp,       "Soil tmp: %5.1fC", avg -> soilTmp);
-    sprintf(airHumidity,    "Air  hum: %5.1f%%", avg -> airHum);
-    sprintf(soilHumidity,   "Soil hum: %6d", avg -> soilHum);
-    sprintf(lightLevel,     "Lght lvl: %6d", avg -> lightVal);
-
-    ssd1306_display_text(&dev, 1, "Average Values:", 15, false);
-    ssd1306_display_text(&dev, 2, airTemp, 16, false);
-    ssd1306_display_text(&dev, 3, soilTemp, 16, false);
-    ssd1306_display_text(&dev, 4, airHumidity, 16, false);
-    ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
-    ssd1306_display_text(&dev, 6, lightLevel, 16, false);
-}
-
-void displayExperimentMin(Info *min) {
-    char airTemp[17];
-    char soilTemp[17];
-    char airHumidity[17];
-    char soilHumidity[17];
-    char lightLevel[17];
-
-    sprintf(airTemp,        "Air  tmp: %5.1fC", min -> airTmp);
-    sprintf(soilTemp,       "Soil tmp: %5.1fC", min -> soilTmp);
-    sprintf(airHumidity,    "Air  hum: %5.1f%%", min -> airHum);
-    sprintf(soilHumidity,   "Soil hum: %6d", min -> soilHum);
-    sprintf(lightLevel,     "Lght lvl: %6d", min -> lightVal);
-
-    ssd1306_display_text(&dev, 1, "Minimum Values:", 15, false);
-    ssd1306_display_text(&dev, 2, airTemp, 16, false);
-    ssd1306_display_text(&dev, 3, soilTemp, 16, false);
-    ssd1306_display_text(&dev, 4, airHumidity, 16, false);
-    ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
-    ssd1306_display_text(&dev, 6, lightLevel, 16, false);
-}
-
-void displayExperimentMax(Info *max) {
-    char airTemp[17];
-    char soilTemp[17];
-    char airHumidity[17];
-    char soilHumidity[17];
-    char lightLevel[17];
-
-    sprintf(airTemp,        "Air  tmp: %5.1fC", max -> airTmp);
-    sprintf(soilTemp,       "Soil tmp: %5.1fC", max -> soilTmp);
-    sprintf(airHumidity,    "Air  hum: %5.1f%%", max -> airHum);
-    sprintf(soilHumidity,   "Soil hum: %6d", max -> soilHum);
-    sprintf(lightLevel,     "Lght lvl: %6d", max -> lightVal);
-
-    ssd1306_display_text(&dev, 1, "Maximum Values:", 15, false);
-    ssd1306_display_text(&dev, 2, airTemp, 16, false);
-    ssd1306_display_text(&dev, 3, soilTemp, 16, false);
-    ssd1306_display_text(&dev, 4, airHumidity, 16, false);
-    ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
-    ssd1306_display_text(&dev, 6, lightLevel, 16, false);
-}
-
-void experimentSelect() {
-    int select = 0;
-    while (1) {
-        displayMenuExperiment(select);
-        if (getEnt()) {
-            resetBtns();
-            clearScreen();
-            switch (select) {
-            case EXP_5SEC:
-                periodicRead(5);
-                break;
-            case EXP_1MIN:
-                periodicRead(60);
-                break;
-            case EXP_5MIN:
-                periodicRead(300);
-                break;
-            case EXP_30MIN:
-                periodicRead(1800);
-                break;
-            case EXP_1HOUR:
-                periodicRead(3600);
-                break;
-            }
-            clearScreen(dev);
-            updateCurrentDisplay(OVERVIEW);
-            updateTick();
-            return;
-        }
-        if (getSel()) {
-            resetBtns();
-            select++;
-            select %= (int) sizeof(enum experiment) + 1; 
-            vTaskDelay(DELAY(100));
-        }
-    }
 }
 
 Info getAvg(Info data[], int size) {
@@ -275,32 +246,66 @@ Info getMax(Info data[], int size) {
     return max;
 }
 
-void experimentResultsSelect(Info data[], int size) {
-    Info avg = getAvg(data, size);
-    Info min = getMin(data, size);
-    Info max = getMax(data, size);
-    int select = 0;
-    clearScreen(dev);
-    while (1) {
-        switch (select) {
-        case 0:
-            displayExperimentAverage(&avg);
-            break;
-        case 1:
-            displayExperimentMin(&min);
-            break;
-        case 2:
-            displayExperimentMax(&max);
-            break;
-        }
-        if (getEnt()) {
-            return;
-        }
-        if (getSel()) {
-            resetBtns();
-            select++;
-            select %= 3;
-            vTaskDelay(DELAY(100));
-        }
-    }
+void displayExperimentAvg(Info *avg) {  
+    char airTemp[17];
+    char soilTemp[17];
+    char airHumidity[17];
+    char soilHumidity[17];
+    char lightLevel[17];
+    
+    sprintf(airTemp,        "Air  tmp: %5.1fC", avg -> airTmp);
+    sprintf(soilTemp,       "Soil tmp: %5.1fC", avg -> soilTmp);
+    sprintf(airHumidity,    "Air  hum: %5.1f%%", avg -> airHum);
+    sprintf(soilHumidity,   "Soil hum: %6d", avg -> soilHum);
+    sprintf(lightLevel,     "Lght lvl: %6d", avg -> lightVal);
+
+    ssd1306_display_text(&dev, 1, "Average Values:", 15, false);
+    ssd1306_display_text(&dev, 2, airTemp, 16, false);
+    ssd1306_display_text(&dev, 3, soilTemp, 16, false);
+    ssd1306_display_text(&dev, 4, airHumidity, 16, false);
+    ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
+    ssd1306_display_text(&dev, 6, lightLevel, 16, false);
 }
+
+void displayExperimentMin(Info *min) {
+    char airTemp[17];
+    char soilTemp[17];
+    char airHumidity[17];
+    char soilHumidity[17];
+    char lightLevel[17];
+
+    sprintf(airTemp,        "Air  tmp: %5.1fC", min -> airTmp);
+    sprintf(soilTemp,       "Soil tmp: %5.1fC", min -> soilTmp);
+    sprintf(airHumidity,    "Air  hum: %5.1f%%", min -> airHum);
+    sprintf(soilHumidity,   "Soil hum: %6d", min -> soilHum);
+    sprintf(lightLevel,     "Lght lvl: %6d", min -> lightVal);
+
+    ssd1306_display_text(&dev, 1, "Minimum Values:", 15, false);
+    ssd1306_display_text(&dev, 2, airTemp, 16, false);
+    ssd1306_display_text(&dev, 3, soilTemp, 16, false);
+    ssd1306_display_text(&dev, 4, airHumidity, 16, false);
+    ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
+    ssd1306_display_text(&dev, 6, lightLevel, 16, false);
+}
+
+void displayExperimentMax(Info *max) {
+    char airTemp[17];
+    char soilTemp[17];
+    char airHumidity[17];
+    char soilHumidity[17];
+    char lightLevel[17];
+
+    sprintf(airTemp,        "Air  tmp: %5.1fC", max -> airTmp);
+    sprintf(soilTemp,       "Soil tmp: %5.1fC", max -> soilTmp);
+    sprintf(airHumidity,    "Air  hum: %5.1f%%", max -> airHum);
+    sprintf(soilHumidity,   "Soil hum: %6d", max -> soilHum);
+    sprintf(lightLevel,     "Lght lvl: %6d", max -> lightVal);
+
+    ssd1306_display_text(&dev, 1, "Maximum Values:", 15, false);
+    ssd1306_display_text(&dev, 2, airTemp, 16, false);
+    ssd1306_display_text(&dev, 3, soilTemp, 16, false);
+    ssd1306_display_text(&dev, 4, airHumidity, 16, false);
+    ssd1306_display_text(&dev, 5, soilHumidity, 16, false);
+    ssd1306_display_text(&dev, 6, lightLevel, 16, false);
+}
+
