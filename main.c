@@ -74,7 +74,7 @@ void mainTask() {
         if (displayScreen(&current)) {
             experimentSelect();
         }
-        printInfo(&current);
+        //printInfo(&current);
         vTaskDelayUntil(&startTimeTicks, DELAY(1000));
     }
 }

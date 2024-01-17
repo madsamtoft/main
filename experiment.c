@@ -36,7 +36,7 @@ void experimentSelect() {
             // Show results of experiment
             exp = (Info *) malloc(sizeof(Info) * time);
             if(periodicRead(exp, time)) {
-                // printData(exp, time);
+                printData(exp, time);
                 experimentResultsSelect(exp, time);
             }
             free(exp);
