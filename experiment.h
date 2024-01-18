@@ -6,6 +6,7 @@
 #include "display.h"
 #include "console.h"
 #include "error_led.h"
+#include "graph.h"
 
 enum experiment {
     EXP_5SEC,   // 0

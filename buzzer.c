@@ -90,6 +90,65 @@ void melody_amogus() {
     vTaskDelete(NULL);
 }
 
+void melody_moonlight() {
+    float notes[] =   {A,D,F,
+                       A,D,F,
+                       A,D,F,
+                       A,D,F,
+                       A,D,F,
+                       A,D,F,
+                       A,D,F,
+                       A,D,F,
+                       B,D,F,
+                       B,D,F,
+                       B,Eb,G,
+                       B,Eb,G,
+                       A,D,F,
+                       A,D,F,
+                       A,Db,E,
+                       A,Db,E,D};
+    
+    int octaves[] =   {3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4,
+                       3,4,4};
+    
+    float lengths[] = {6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6,
+                       6,6,6};
+
+    int length = sizeof(octaves)/sizeof(int);
+    for (int i = 0; i < length; i ++) {
+        play_note(notes[i],octaves[i],lengths[i]/4);
+    }
+    vTaskDelete(NULL);
+}
+
 void melody_error() {
     float notes[] =   {C,Fb};
     int octaves[] =   {4,4};

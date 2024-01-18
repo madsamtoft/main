@@ -40,8 +40,8 @@ void printInfoStat(InfoStat *infoStat) {
 void printForever(Info data, int count) {
     printf("%d;", count);
     printf("%.1f;", data.airTmp);
-    printf("%.1f;", data.airHum);
-    printf("%.3f;", data.soilTmp);
+    printf("%.1f;", data.soilTmp);
+    printf("%.3f;", data.airHum);
     printf("%.3f;", data.soilHum);
     printf("%.3f;\n", data.lightVal);
 }
