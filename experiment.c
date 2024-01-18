@@ -17,6 +17,8 @@ void experimentSelect() {
             resetBtns();
             clearScreen();
             switch (select) {
+            case EXP_RETURN:
+                break;
             case EXP_5SEC:
                 time = 5;
                 break;
@@ -51,7 +53,7 @@ void experimentSelect() {
         if (getSel()) {
             resetBtns();
             select++;
-            select %= 6; 
+            select %= 7; 
             vTaskDelay(DELAY(100));
         }
     }
@@ -70,9 +72,6 @@ int periodicRead(Info *exp, int time) { // Read and get average over a period of
         if (getEnt()) {
             resetBtns();
             if (exitSelect()) {
-                // Titanic animation
-                xTaskCreate(titanic, "melody_load_done", 2000, NULL, 1, NULL);
-                displayTitanicAnimation();
                 resetBtns();
                 break;
             } else {
@@ -127,8 +126,9 @@ void foreverRead() {
     }
     // LED's
     gpio_set_level(GPIO_LED_RED, 0);
-    // Sound Effect
-    xTaskCreate(sfx_3, "sfx_3", 1000, NULL, 1, NULL);
+    // Titatinic animation
+    xTaskCreate(titanic, "melody_load_done", 2000, NULL, 1, NULL);
+    displayTitanicAnimation();
 }
 
 void experimentResultsSelect(Info data[], int size) {
@@ -207,11 +207,12 @@ void experimentResultsSelect(Info data[], int size) {
 }
 
 void displayMenuExperiment(int select) {
-    ssd1306_display_text(&dev, 1, "Run exp. for:", 13, false);
+    ssd1306_display_text(&dev, 0, "Choose Exp.:", 12, false);
+    ssd1306_display_text(&dev, 1, "<- Return", 9, (select == EXP_RETURN));
     ssd1306_display_text(&dev, 2, " * 5 seconds", 12, (select == EXP_5SEC));
     ssd1306_display_text(&dev, 3, " * 1 minute", 11, (select == EXP_1MIN));
     ssd1306_display_text(&dev, 4, " * 5 minutes", 12, (select == EXP_5MIN));
-    ssd1306_display_text(&dev, 5, " * 30 minutes", 12, (select == EXP_30MIN));
+    ssd1306_display_text(&dev, 5, " * 30 minutes", 13, (select == EXP_30MIN));
     ssd1306_display_text(&dev, 6, " * 1 hour", 9, (select == EXP_1HOUR));
     ssd1306_display_text(&dev, 7, " * Forever", 10, (select == EXP_FOREVER));
 }

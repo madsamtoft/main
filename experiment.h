@@ -9,12 +9,13 @@
 #include "graph.h"
 
 enum experiment {
-    EXP_5SEC,   // 0
-    EXP_1MIN,   // 1
-    EXP_5MIN,   // 2
-    EXP_30MIN,  // 3
-    EXP_1HOUR,  // 4
-    EXP_FOREVER, // 5
+    EXP_RETURN, // 0
+    EXP_5SEC,   // 1
+    EXP_1MIN,   // 2
+    EXP_5MIN,   // 3
+    EXP_30MIN,  // 4
+    EXP_1HOUR,  // 5
+    EXP_FOREVER,// 6
 };
 
 void initDisplayExp();
