@@ -172,3 +172,42 @@ void displayMediumPlant(){
 void displayLargePlant(){
     ssd1306_bitmaps(&dev, 44, 16, &largeplant, 40, 48, false);
 }
+void displayTitanicAnimation(){
+    clearScreen();
+    ssd1306_bitmaps(&dev, 0, 0, &titanic1, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic2, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic3, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic4, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic5, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic6, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic7, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic8, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic9, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic10, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic11, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic12, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic13, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic14, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic15, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic16, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic17, 128, 64, false);
+    vTaskDelay(DELAY(400));
+    clearScreen();
+
+}

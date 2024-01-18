@@ -179,3 +179,15 @@ void sfx_3() {
     play_note(C,4,0.5);
     vTaskDelete(NULL);
 }
+
+void titanic(){
+    float notes[] =   {F,G,G,A,  G,F,G,C,  B,A,F,D,  B,C,  F,G,G,A,  G,F,G,C,  A,C,D,C,  G,A,G,F}; //extension F,F,F,F, E,F,F,E,F,  0,G,A,G,  F,F,F,F, E,F,F,C
+    int octaves[] =   {4,4,4,4,  4,4,4,5,  4,4,4,4,  3,4,  4,4,4,4,  4,4,4,5,  4,5,5,5,  4,4,4,4};// 4,4,4,4, 4,4,4,4,4,  0,4,4,4,  4,4,4,4, 4,4,4,4
+    float lengths[] = {2,2,2,10, 2,2,2,10, 2,2,4,8,  4,10, 2,2,2,10, 2,2,2,10, 2,2,8,8,  1,1,14,10}; //6,2,4,4, 4,10,4,4,4, 4,4,10,10,6,2,4,4, 4,10,10,16
+
+    int length = sizeof(octaves)/sizeof(int);
+    for (int i = 0; i < length; i ++) {
+        play_note(notes[i],octaves[i]-2,lengths[i]/2);
+    }
+    vTaskDelete(NULL);
+}

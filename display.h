@@ -41,9 +41,7 @@ void displayExit();
 int exitSelect();
 
 int displayScreen(Info *info);
-// Test bitmaps
-void displayBitmapGraph();
-void displayAboveGraph();
+void displayTitanicAnimation();
 
 // Boot logo
 void displaySmallPlant();
