@@ -70,6 +70,7 @@ int periodicRead(Info *exp, int time) { // Read and get average over a period of
         if (getEnt()) {
             resetBtns();
             if (exitSelect()) {
+                
                 break;
             } else {
                 delayTicks = xTaskGetTickCount();
@@ -165,11 +166,12 @@ void experimentResultsSelect(Info data[], int size) {
             break;
         }
         if (getEnt()) {
+            resetBtns();
             // free(bitmapAirTmp);
             // free(bitmapSoilTmp);
             // free(bitmapAirHum);
             // free(bitmapSoilHum);
-            free(bitmapLight);
+            // free(bitmapLight);
             return;
         }
         if (getSel()) {

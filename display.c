@@ -16,15 +16,6 @@ void updateCurrentDisplay(char display) {
     currentDisplay = display;
 }
 
-void displayMenu(int select) { // Method to display the menu
-    ssd1306_display_text(&dev, 1, "Menu:", 5, false);
-    ssd1306_display_text(&dev, 2, "Overview", 8, (select == 0));
-    ssd1306_display_text(&dev, 3, "Soil Sensor", 11, (select == 1));
-    ssd1306_display_text(&dev, 4, "Air Sensor", 10, (select == 2));
-    ssd1306_display_text(&dev, 5, "Light Sensor", 12, (select == 3));
-    ssd1306_display_text(&dev, 6, "Run Experiment", 14, (select == 4));
-}
-
 void displayInfo(Info *info) { // Method to display current info values    
     airTmpError = info -> airTmp < LOW_AIR_TMP || info -> airTmp > HIGH_AIR_TMP;
     soilTmpError = info -> soilTmp < LOW_SOIL_TMP || info -> soilTmp > HIGH_SOIL_TMP;
@@ -139,31 +130,12 @@ int exitSelect() {
     }
 }
 
-void menuSelect() {
-    int select = OVERVIEW;
-    while (1) {
-        displayMenu(select);
-        if (getEnt()) {
-            resetBtns();
-            clearScreen();
-            currentDisplay = select;
-            return;
-        }
-        if (getSel()) {
-            resetBtns();
-            select++;
-            select %= 5;
-            vTaskDelay(DELAY(100));
-        }
-    }
-}
-
 int displayScreen(Info *info) {
     if (getEnt() && currentDisplay != EXPERIMENT_MENU) {
         resetBtns();
         clearScreen();
-        currentDisplay = MENU;
-    } else if (getSel() && currentDisplay != MENU) {
+        currentDisplay = EXPERIMENT_MENU;
+    } else if (getSel()) {
         resetBtns();
         clearScreen();
         currentDisplay ++;
@@ -183,13 +155,7 @@ int displayScreen(Info *info) {
         displayLightInfo(info);
         break;
     case EXPERIMENT_MENU:
-        return 1; // Return to main
-    case MENU:
-        menuSelect();
-        break;
-    default:
-        displayInfo(info);
-        break;
+        return 1; // Return to app_main
     }
     updateTick();
     return 0;

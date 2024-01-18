@@ -19,7 +19,6 @@ enum screen {
     AIR_SENSOR,         // 2
     LIGHT_SENSOR,       // 3
     EXPERIMENT_MENU,    // 4
-    MENU,               // 5
 };
 
 static char currentDisplay = OVERVIEW;
@@ -34,7 +33,6 @@ void initDisplay();
 void clearScreen();
 void updateCurrentDisplay(char display);
 
-void displayMenu(int select);
 void displayInfo(Info *info);
 void displaySoilInfo(Info *info);
 void displayAirInfo(Info *info);
@@ -42,7 +40,6 @@ void displayLightInfo(Info *info);
 void displayExit();
 int exitSelect();
 
-void menuSelect();
 int displayScreen(Info *info);
 // Test bitmaps
 void displayBitmapGraph();
