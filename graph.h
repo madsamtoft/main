@@ -9,7 +9,7 @@
 
 #define WIDTH 104
 #define HEIGHT 40
-#define BITMAP_LENGTH  ((WIDTH * HEIGHT) / 8)
+#define BITMAP_LENGTH  (WIDTH * HEIGHT) / 8
 
 void renderBitmapLight(Info data[], int size, uint8_t *bitmap);
 void graphBitmap(SSD1306_t *dev, uint8_t *bitmap);

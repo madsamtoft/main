@@ -137,13 +137,13 @@ void experimentResultsSelect(Info data[], int size) {
     // uint8_t *bitmapSoilTmp = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
     // uint8_t *bitmapAirHum = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
     // uint8_t *bitmapSoilHum = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
-    uint8_t *bitmapLight = (uint8_t *) malloc(520);
+    uint8_t *bitmapLight = (uint8_t *) malloc(BITMAP_LENGTH);
     if (bitmapLight == NULL) {
         printf("ERROR ALLOCATING MEMORY\n");
         return;
     } else {
         printf("No error. Size of allocated memory: %d\n", sizeof(bitmapLight));
-        vTaskDelay(DELAY(1000));
+        // vTaskDelay(DELAY(1000));
     }
 
     // bitmapAirTmp = renderBitmapAirTmp(data, size);
