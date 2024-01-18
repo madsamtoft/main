@@ -89,7 +89,7 @@ int periodicRead(Info *exp, int time) { // Read and get average over a period of
         printForever(exp[i], i);
         displayExperiment(&(exp[i]), i, time);
         // Task Handling
-        // vTaskDelayUntil(&delayTicks, DELAY(1000));
+        vTaskDelayUntil(&delayTicks, DELAY(1000));
     }
     // LED's
     gpio_set_level(GPIO_LED_RED, 0);
@@ -143,6 +143,14 @@ void experimentResultsSelect(Info data[], int size) {
     uint8_t *bitmapAirHum = (uint8_t *) malloc(BITMAP_LENGTH);
     uint8_t *bitmapSoilHum = (uint8_t *) malloc(BITMAP_LENGTH);
     uint8_t *bitmapLight = (uint8_t *) malloc(BITMAP_LENGTH);
+    if (bitmapAirTmp == NULL ||
+        bitmapSoilTmp == NULL ||
+        bitmapAirHum == NULL ||
+        bitmapSoilHum == NULL ||
+        bitmapLight == NULL) {
+            printf("ERROR ALLOCATING MEMORY\n");
+            return;
+        }
 
     renderBitmapAirTmp(data, size, bitmapAirTmp);
     renderBitmapSoilTmp(data, size, bitmapSoilTmp);
