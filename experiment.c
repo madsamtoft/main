@@ -65,12 +65,15 @@ int periodicRead(Info *exp, int time) { // Read and get average over a period of
     resetStatusBits(); // Reset error LED
     // Task Handling
     TickType_t delayTicks = xTaskGetTickCount();
-
     int i;
     for (i = 0; i < time; i++) {
         if (getEnt()) {
             resetBtns();
             if (exitSelect()) {
+                // Titanic animation
+                xTaskCreate(titanic, "melody_load_done", 2000, NULL, 1, NULL);
+                displayTitanicAnimation();
+                resetBtns();
                 break;
             } else {
                 delayTicks = xTaskGetTickCount();
@@ -184,6 +187,7 @@ void experimentResultsSelect(Info data[], int size) {
             break;
         }
         if (getEnt()) {
+            resetBtns();
             // free(bitmapAirTmp);
             // free(bitmapSoilTmp);
             // free(bitmapAirHum);
@@ -285,9 +289,9 @@ Info getAvg(Info data[], int size) {
     }
     avg.airTmp = airTmp / size;
     avg.soilTmp = soilTmp / size;
-    avg.airHum = (int) airHum / size;
+    avg.airHum = airHum / size;
     avg.soilHum = soilHum / size;
-    avg.lightVal = (int) lightVal / size;
+    avg.lightVal = lightVal / size;
     return avg;
 }
 

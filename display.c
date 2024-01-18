@@ -16,21 +16,12 @@ void updateCurrentDisplay(char display) {
     currentDisplay = display;
 }
 
-void displayMenu(int select) { // Method to display the menu
-    ssd1306_display_text(&dev, 1, "Menu:", 5, false);
-    ssd1306_display_text(&dev, 2, "Overview", 8, (select == 0));
-    ssd1306_display_text(&dev, 3, "Soil Sensor", 11, (select == 1));
-    ssd1306_display_text(&dev, 4, "Air Sensor", 10, (select == 2));
-    ssd1306_display_text(&dev, 5, "Light Sensor", 12, (select == 3));
-    ssd1306_display_text(&dev, 6, "Run Experiment", 14, (select == 4));
-}
-
 void displayInfo(Info *info) { // Method to display current info values    
     airTmpError = info -> airTmp < LOW_AIR_TMP || info -> airTmp > HIGH_AIR_TMP;
     soilTmpError = info -> soilTmp < LOW_SOIL_TMP || info -> soilTmp > HIGH_SOIL_TMP;
     airHumError = info -> airHum < LOW_AIR_HUM || info -> airHum > HIGH_AIR_HUM;
     soilHumError = info -> soilHum < LOW_SOIL_HUM || info -> soilHum > HIGH_SOIL_HUM;
-    lightError = info -> lightVal < LOW_LIGHT;
+    lightError = info -> lightVal < DIM_LIGHT;
     blink = !blink;
 
     char airTemp[17];
@@ -101,13 +92,26 @@ void displayAirInfo(Info *info) {
 }
 
 void displayLightInfo(Info *info) {
-    bool lightLvlLow = info -> lightVal < LOW_LIGHT;
+    float lightLvl = info -> lightVal;
 
     char lightLevel[17];
     char lightLevelStat[17];
 
+    char stat[5] = "";
+    if(lightLvl < DARK_LIGHT) {
+        strcpy(stat, "DARK");
+    } else if(lightLvl < DIM_LIGHT) {
+        strcpy(stat, "DIM");
+    } else if(lightLvl < GOOD_LIGHT) {
+        strcpy(stat, "GOOD");
+    } else if(lightLvl > GOOD_LIGHT) {
+        strcpy(stat, "HIGH");
+    } else {
+        strcpy(stat, "ERR");
+    }
+
     sprintf(lightLevel,     "Lght lvl: %5.1f%%", info -> lightVal);
-    sprintf(lightLevelStat, "Lght Stat: %5s", lightLvlLow ? "LOW" : "OK");
+    sprintf(lightLevelStat, "Lght Stat: %5s", stat);
 
     ssd1306_display_text(&dev, 1, "Light info:", 11, false);
     ssd1306_display_text(&dev, 2, lightLevel, 16, false);
@@ -139,31 +143,12 @@ int exitSelect() {
     }
 }
 
-void menuSelect() {
-    int select = OVERVIEW;
-    while (1) {
-        displayMenu(select);
-        if (getEnt()) {
-            resetBtns();
-            clearScreen();
-            currentDisplay = select;
-            return;
-        }
-        if (getSel()) {
-            resetBtns();
-            select++;
-            select %= 5;
-            vTaskDelay(DELAY(100));
-        }
-    }
-}
-
 int displayScreen(Info *info) {
     if (getEnt() && currentDisplay != EXPERIMENT_MENU) {
         resetBtns();
         clearScreen();
-        currentDisplay = MENU;
-    } else if (getSel() && currentDisplay != MENU) {
+        currentDisplay = EXPERIMENT_MENU;
+    } else if (getSel()) {
         resetBtns();
         clearScreen();
         currentDisplay ++;
@@ -183,13 +168,7 @@ int displayScreen(Info *info) {
         displayLightInfo(info);
         break;
     case EXPERIMENT_MENU:
-        return 1; // Return to main
-    case MENU:
-        menuSelect();
-        break;
-    default:
-        displayInfo(info);
-        break;
+        return 1; // Return to app_main
     }
     updateTick();
     return 0;
@@ -205,4 +184,44 @@ void displayMediumPlant(){
 
 void displayLargePlant(){
     ssd1306_bitmaps(&dev, 44, 16, &largeplant, 40, 48, false);
+}
+void displayTitanicAnimation(){
+    clearScreen();
+    ssd1306_bitmaps(&dev, 0, 0, &titanic1, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic2, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic3, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic4, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic5, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic6, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic7, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic8, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic9, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic10, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic11, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic12, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic13, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic14, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic15, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic16, 128, 64, false);
+    vTaskDelay(DELAY(300));
+    ssd1306_bitmaps(&dev, 0, 0, &titanic17, 128, 64, false);
+    vTaskDelay(DELAY(400));
+    ssd1306_clear_screen(&dev, true);
+    ssd1306_contrast(&dev, 0xff);
+    vTaskDelay(DELAY(1000));
 }
