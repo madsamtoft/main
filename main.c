@@ -34,6 +34,18 @@ void updateTick() {
     startTimeTicks = xTaskGetTickCount();
 }
 
+void bootAnimation() {
+    displaySmallPlant();
+    // Error blink. will remain alive for ever. 
+    xTaskCreate(blinkErrors, "blinkErrors", 1000, 1+2+4+8+16, 1, NULL);
+    //Boot melody
+    xTaskCreate(melody_load, "melody_load", 1000, NULL, 1, NULL);
+    displayMediumPlant();
+    displayLargePlant();
+    xTaskCreate(melody_load_done, "melody_load_done", 1000, NULL, 1, NULL);
+    vTaskDelay(DELAY(500));
+}
+
 void app_main(void) {
     i2cConfig();
     initSoil();
@@ -50,18 +62,7 @@ void app_main(void) {
     InfoStat averages;
     averages.count = 0;
     
-    displaySmallPlant();
-    // Error blink. will remain alive for ever. 
-    xTaskCreate(blinkErrors, "blinkErrors", 1000, 1+2+4+8+16, 1, NULL);
-    //Boot melody
-    xTaskCreate(melody_load, "melody_load", 1000, NULL, 1, NULL);
-    displayMediumPlant();
-    displayLargePlant();
-    xTaskCreate(melody_load_done, "melody_load_done", 1000, NULL, 1, NULL);
-    vTaskDelay(DELAY(500));
-    
-    // xTaskCreate(titanic, "melody_load_done", 2000, NULL, 1, NULL);
-    // displayTitanicAnimation();
+    bootAnimation();
 
     updateTick();
     while (1) {
