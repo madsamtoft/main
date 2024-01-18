@@ -17,6 +17,8 @@ void experimentSelect() {
             resetBtns();
             clearScreen();
             switch (select) {
+            case EXP_RETURN:
+                break;
             case EXP_5SEC:
                 time = 5;
                 break;
@@ -51,7 +53,7 @@ void experimentSelect() {
         if (getSel()) {
             resetBtns();
             select++;
-            select %= 6; 
+            select %= 7; 
             vTaskDelay(DELAY(100));
         }
     }
@@ -141,21 +143,12 @@ void experimentResultsSelect(Info data[], int size) {
     uint8_t *bitmapAirHum = (uint8_t *) malloc(BITMAP_LENGTH);
     uint8_t *bitmapSoilHum = (uint8_t *) malloc(BITMAP_LENGTH);
     uint8_t *bitmapLight = (uint8_t *) malloc(BITMAP_LENGTH);
-    // if (bitmapLight == NULL) {
-    //     printf("ERROR ALLOCATING MEMORY\n");
-    //     return;
-    // } else {
-    //     printf("No error. Size of allocated memory: %d\n", sizeof(bitmapLight));
-    //     vTaskDelay(DELAY(1000));
-    // }
 
     renderBitmapAirTmp(data, size, bitmapAirTmp);
     renderBitmapSoilTmp(data, size, bitmapSoilTmp);
     renderBitmapAirHum(data, size, bitmapAirHum);
     renderBitmapSoilHum(data, size, bitmapSoilHum);
     renderBitmapLight(data, size, bitmapLight);
-
-
 
     int select = 0;
     clearScreen(dev);
@@ -188,11 +181,11 @@ void experimentResultsSelect(Info data[], int size) {
         }
         if (getEnt()) {
             resetBtns();
-            // free(bitmapAirTmp);
-            // free(bitmapSoilTmp);
-            // free(bitmapAirHum);
-            // free(bitmapSoilHum);
-            // free(bitmapLight);
+            free(bitmapAirTmp);
+            free(bitmapSoilTmp);
+            free(bitmapAirHum);
+            free(bitmapSoilHum);
+            free(bitmapLight);
             return;
         }
         if (getSel()) {
@@ -206,11 +199,12 @@ void experimentResultsSelect(Info data[], int size) {
 }
 
 void displayMenuExperiment(int select) {
-    ssd1306_display_text(&dev, 1, "Run exp. for:", 13, false);
+    ssd1306_display_text(&dev, 0, "Choose Exp.:", 12, false);
+    ssd1306_display_text(&dev, 1, "<- Return", 9, (select == EXP_RETURN));
     ssd1306_display_text(&dev, 2, " * 5 seconds", 12, (select == EXP_5SEC));
     ssd1306_display_text(&dev, 3, " * 1 minute", 11, (select == EXP_1MIN));
     ssd1306_display_text(&dev, 4, " * 5 minutes", 12, (select == EXP_5MIN));
-    ssd1306_display_text(&dev, 5, " * 30 minutes", 12, (select == EXP_30MIN));
+    ssd1306_display_text(&dev, 5, " * 30 minutes", 13, (select == EXP_30MIN));
     ssd1306_display_text(&dev, 6, " * 1 hour", 9, (select == EXP_1HOUR));
     ssd1306_display_text(&dev, 7, " * Forever", 10, (select == EXP_FOREVER));
 }

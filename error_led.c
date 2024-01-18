@@ -61,10 +61,10 @@ void callRGB(int index) {
         case ERROR_AIR_TMP:
             setRGB(255, 0, 0);
             break;
-        case ERROR_AIR_HUM:
+        case ERROR_SOIL_TMP:
             setRGB(255, 150, 0);
             break;
-        case ERROR_SOIL_TMP:
+        case ERROR_AIR_HUM:
             setRGB(0, 255, 0);
             break;
         case ERROR_SOIL_HUM:
