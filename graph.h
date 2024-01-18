@@ -11,8 +11,13 @@
 #define HEIGHT 40
 #define BITMAP_LENGTH  (WIDTH * HEIGHT) / 8
 
+void renderBitmapAirTmp(Info data[], int size, uint8_t *bitmap);
+void renderBitmapSoilTmp(Info data[], int size, uint8_t *bitmap);
+void renderBitmapAirHum(Info data[], int size, uint8_t *bitmap);
+void renderBitmapSoilHum(Info data[], int size, uint8_t *bitmap);
 void renderBitmapLight(Info data[], int size, uint8_t *bitmap);
-void graphBitmap(SSD1306_t *dev, uint8_t *bitmap);
-
+void percentAxis(SSD1306_t *dev, int time, char temp[]);
+void temperatureAxis(SSD1306_t *dev, int time, char temp[]);
+void graphBitmap(SSD1306_t *dev, uint8_t *bitmap, int time, int display);
 
 #endif

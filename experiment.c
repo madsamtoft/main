@@ -133,23 +133,23 @@ void experimentResultsSelect(Info data[], int size) {
     Info min = getMin(data, size);
     Info max = getMax(data, size);
 
-    // uint8_t *bitmapAirTmp = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
-    // uint8_t *bitmapSoilTmp = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
-    // uint8_t *bitmapAirHum = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
-    // uint8_t *bitmapSoilHum = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
+    uint8_t *bitmapAirTmp = (uint8_t *) malloc(BITMAP_LENGTH);
+    uint8_t *bitmapSoilTmp = (uint8_t *) malloc(BITMAP_LENGTH);
+    uint8_t *bitmapAirHum = (uint8_t *) malloc(BITMAP_LENGTH);
+    uint8_t *bitmapSoilHum = (uint8_t *) malloc(BITMAP_LENGTH);
     uint8_t *bitmapLight = (uint8_t *) malloc(BITMAP_LENGTH);
-    if (bitmapLight == NULL) {
-        printf("ERROR ALLOCATING MEMORY\n");
-        return;
-    } else {
-        printf("No error. Size of allocated memory: %d\n", sizeof(bitmapLight));
-        // vTaskDelay(DELAY(1000));
-    }
+    // if (bitmapLight == NULL) {
+    //     printf("ERROR ALLOCATING MEMORY\n");
+    //     return;
+    // } else {
+    //     printf("No error. Size of allocated memory: %d\n", sizeof(bitmapLight));
+    //     vTaskDelay(DELAY(1000));
+    // }
 
-    // bitmapAirTmp = renderBitmapAirTmp(data, size);
-    // bitmapSoilTmp = renderBitmapSoilTmp(data, size);
-    // bitmapAirHum = renderBitmapAirHum(data, size);
-    // bitmapSoilHum = renderBitmapSoilHum(data, size);
+    renderBitmapAirTmp(data, size, bitmapAirTmp);
+    renderBitmapSoilTmp(data, size, bitmapSoilTmp);
+    renderBitmapAirHum(data, size, bitmapAirHum);
+    renderBitmapSoilHum(data, size, bitmapSoilHum);
     renderBitmapLight(data, size, bitmapLight);
 
 
@@ -168,7 +168,19 @@ void experimentResultsSelect(Info data[], int size) {
             displayExperimentMax(&max);
             break;
         case 3:
-            graphBitmap(&dev, bitmapLight);
+            graphBitmap(&dev, bitmapAirTmp, size, 0);
+            break;
+        case 4:
+            graphBitmap(&dev, bitmapSoilTmp, size, 1);
+            break;
+        case 5:
+            graphBitmap(&dev, bitmapAirHum, size, 2);
+            break;
+        case 6:
+            graphBitmap(&dev, bitmapSoilHum, size, 3);
+            break;
+        case 7:
+            graphBitmap(&dev, bitmapLight, size, 4);
             break;
         }
         if (getEnt()) {
@@ -183,7 +195,7 @@ void experimentResultsSelect(Info data[], int size) {
             resetBtns();
             clearScreen();
             select++;
-            select %= 4;
+            select %= 8;
             vTaskDelay(DELAY(100));
         }
     }
