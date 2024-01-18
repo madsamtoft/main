@@ -271,9 +271,9 @@ Info getAvg(Info data[], int size) {
     }
     avg.airTmp = airTmp / size;
     avg.soilTmp = soilTmp / size;
-    avg.airHum = (int) airHum / size;
+    avg.airHum = airHum / size;
     avg.soilHum = soilHum / size;
-    avg.lightVal = (int) lightVal / size;
+    avg.lightVal = lightVal / size;
     return avg;
 }
 

@@ -97,16 +97,14 @@ void displayLightInfo(Info *info) {
     char lightLevel[17];
     char lightLevelStat[17];
 
-    int lightStat = lightLvl < DARK_LIGHT ? 0 : (lightLvl < DIM_LIGHT ? 1 : (lightLvl < GOOD_LIGHT ? 2 : 3));
-
     char stat[5] = "";
-    if(lightStat == 0) {
+    if(lightLvl < DARK_LIGHT) {
         strcpy(stat, "DARK");
-    } else if(lightStat == 1) {
+    } else if(lightLvl < DIM_LIGHT) {
         strcpy(stat, "DIM");
-    } else if(lightStat == 2) {
+    } else if(lightLvl < GOOD_LIGHT) {
         strcpy(stat, "GOOD");
-    } else if(lightStat == 3) {
+    } else if(lightLvl > GOOD_LIGHT) {
         strcpy(stat, "HIGH");
     } else {
         strcpy(stat, "ERR");
