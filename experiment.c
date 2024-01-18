@@ -72,9 +72,6 @@ int periodicRead(Info *exp, int time) { // Read and get average over a period of
         if (getEnt()) {
             resetBtns();
             if (exitSelect()) {
-                // Titanic animation
-                xTaskCreate(titanic, "melody_load_done", 2000, NULL, 1, NULL);
-                displayTitanicAnimation();
                 resetBtns();
                 break;
             } else {
@@ -129,8 +126,9 @@ void foreverRead() {
     }
     // LED's
     gpio_set_level(GPIO_LED_RED, 0);
-    // Sound Effect
-    xTaskCreate(sfx_3, "sfx_3", 1000, NULL, 1, NULL);
+    // Titatinic animation
+    xTaskCreate(titanic, "melody_load_done", 2000, NULL, 1, NULL);
+    displayTitanicAnimation();
 }
 
 void experimentResultsSelect(Info data[], int size) {
