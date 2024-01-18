@@ -65,7 +65,6 @@ int periodicRead(Info *exp, int time) { // Read and get average over a period of
     resetStatusBits(); // Reset error LED
     // Task Handling
     TickType_t delayTicks = xTaskGetTickCount();
-
     int i;
     for (i = 0; i < time; i++) {
         if (getEnt()) {
