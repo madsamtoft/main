@@ -73,6 +73,7 @@ int periodicRead(Info *exp, int time) { // Read and get average over a period of
                 // Titanic animation
                 xTaskCreate(titanic, "melody_load_done", 2000, NULL, 1, NULL);
                 displayTitanicAnimation();
+                resetBtns();
                 break;
             } else {
                 delayTicks = xTaskGetTickCount();

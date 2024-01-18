@@ -82,7 +82,7 @@ void setStatusBits(Info *info) {
     statusBits += (info -> soilTmp < LOW_SOIL_TMP || info -> soilTmp > HIGH_SOIL_TMP) << ERROR_SOIL_TMP;
     statusBits += (info -> airHum < LOW_AIR_HUM || info -> airHum > HIGH_AIR_HUM) << ERROR_AIR_HUM;
     statusBits += (info -> soilHum < LOW_SOIL_HUM || info -> soilHum > HIGH_SOIL_HUM) << ERROR_SOIL_HUM;
-    statusBits += (info -> lightVal < LOW_LIGHT) << ERROR_LIGHT_VAL;
+    statusBits += (info -> lightVal < DIM_LIGHT) << ERROR_LIGHT_VAL;
 }
 
 void resetStatusBits() {

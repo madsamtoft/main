@@ -1,6 +1,8 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
+#include <string.h>
+
 //Own libraries
 #include "main.h"
 #include "bitmaps.h"

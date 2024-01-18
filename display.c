@@ -21,7 +21,7 @@ void displayInfo(Info *info) { // Method to display current info values
     soilTmpError = info -> soilTmp < LOW_SOIL_TMP || info -> soilTmp > HIGH_SOIL_TMP;
     airHumError = info -> airHum < LOW_AIR_HUM || info -> airHum > HIGH_AIR_HUM;
     soilHumError = info -> soilHum < LOW_SOIL_HUM || info -> soilHum > HIGH_SOIL_HUM;
-    lightError = info -> lightVal < LOW_LIGHT;
+    lightError = info -> lightVal < DIM_LIGHT;
     blink = !blink;
 
     char airTemp[17];
@@ -92,13 +92,28 @@ void displayAirInfo(Info *info) {
 }
 
 void displayLightInfo(Info *info) {
-    bool lightLvlLow = info -> lightVal < LOW_LIGHT;
+    float lightLvl = info -> lightVal;
 
     char lightLevel[17];
     char lightLevelStat[17];
 
+    int lightStat = lightLvl < DARK_LIGHT ? 0 : (lightLvl < DIM_LIGHT ? 1 : (lightLvl < GOOD_LIGHT ? 2 : 3));
+
+    char stat[5] = "";
+    if(lightStat == 0) {
+        strcpy(stat, "DARK");
+    } else if(lightStat == 1) {
+        strcpy(stat, "DIM");
+    } else if(lightStat == 2) {
+        strcpy(stat, "GOOD");
+    } else if(lightStat == 3) {
+        strcpy(stat, "HIGH");
+    } else {
+        strcpy(stat, "ERR");
+    }
+
     sprintf(lightLevel,     "Lght lvl: %5.1f%%", info -> lightVal);
-    sprintf(lightLevelStat, "Lght Stat: %5s", lightLvlLow ? "LOW" : "OK");
+    sprintf(lightLevelStat, "Lght Stat: %5s", stat);
 
     ssd1306_display_text(&dev, 1, "Light info:", 11, false);
     ssd1306_display_text(&dev, 2, lightLevel, 16, false);
@@ -208,6 +223,7 @@ void displayTitanicAnimation(){
     vTaskDelay(DELAY(300));
     ssd1306_bitmaps(&dev, 0, 0, &titanic17, 128, 64, false);
     vTaskDelay(DELAY(400));
-    clearScreen();
-
+    ssd1306_clear_screen(&dev, true);
+    ssd1306_contrast(&dev, 0xff);
+    vTaskDelay(DELAY(1000));
 }

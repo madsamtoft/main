@@ -40,15 +40,17 @@
 #define HIGH_SOIL_HUM 80
 
 #define LOW_SOIL_TMP 18
-#define HIGH_SOIL_TMP 25 // Same as air temp 
+#define HIGH_SOIL_TMP 30 // Same as air temp 
 
 #define LOW_AIR_HUM 20 
 #define HIGH_AIR_HUM 80 // Between 60 and 80
 
 #define LOW_AIR_TMP 18
-#define HIGH_AIR_TMP 25 // Should be 24
+#define HIGH_AIR_TMP 30 // Should be 24
 
-#define LOW_LIGHT 25
+#define DARK_LIGHT 10
+#define DIM_LIGHT 25
+#define GOOD_LIGHT 85
 
 typedef struct {
     float airTmp;
