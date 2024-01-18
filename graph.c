@@ -1,53 +1,55 @@
 #include "graph.h"
 
 void renderBitmapAirTmp(Info data[], int size, uint8_t *bitmap) {
-//     for (int i = 0; i < BITMAP_LENGTH; i++) {
-//         bitmap[i] = 0;
-//     }
+    for (int i = 0; i < BITMAP_LENGTH; i++) {
+        bitmap[i] = 0;
+    }
 
-//     if (size > WIDTH) {
-//         for (int i = 0; i < size; i++) {
-//             int x = (float) i / size * WIDTH;
-//             float value = data[i].airTmp;
-//             int y = HEIGHT - (int) (value / 100 * HEIGHT);
-//             int bit = x + y * WIDTH;
-//             bitmap[bit/8] = bitmap[bit/8] | (1<<(7 - bit%8));
-//         }
-//     } else {
-//         float scale = (float) size / WIDTH;
-//         for (int x = 0; x < WIDTH; x++) {     
-//             int i = (int) (scale * x);
-//             float value = data[i].airTmp;
-//             int y = HEIGHT - (int) (value / 100 * HEIGHT);
-//             int bit = x + y * WIDTH;
-//             bitmap[bit/8] = bitmap[bit/8] | (1<<(7 - bit%8));
-//         }
-//     }
+    if (size > WIDTH) {
+        for (int i = 0; i < size; i++) {
+            int x = (float) i / size * WIDTH;
+            float value = data[i].airTmp;
+            int y = HEIGHT - (int) ((value-MIN_TEMP) * HEIGHT / (MAX_TEMP-MIN_TEMP));
+            printf("Air: Adjusted temp: %.2f. Y-value: %d\n",value - MIN_TEMP, y);
+            int bit = x + y * WIDTH;
+            bitmap[bit/8] = bitmap[bit/8] | (1<<(7 - bit%8));
+        }
+    } else {
+        float scale = (float) size / WIDTH;
+        for (int x = 0; x < WIDTH; x++) {     
+            int i = (int) (scale * x);
+            float value = data[i].airTmp;
+            int y = HEIGHT - (int) ((value-MIN_TEMP) * HEIGHT / (MAX_TEMP-MIN_TEMP));
+            int bit = x + y * WIDTH;
+            bitmap[bit/8] = bitmap[bit/8] | (1<<(7 - bit%8));
+        }
+    }
 }
 
 void renderBitmapSoilTmp(Info data[], int size, uint8_t *bitmap) {
-    // for (int i = 0; i < BITMAP_LENGTH; i++) {
-    //     bitmap[i] = 0;
-    // }
+    for (int i = 0; i < BITMAP_LENGTH; i++) {
+        bitmap[i] = 0;
+    }
 
-    // if (size > WIDTH) {
-    //     for (int i = 0; i < size; i++) {
-    //         int x = (float) i / size * WIDTH;
-    //         float value = data[i].soilTmp;
-    //         int y = HEIGHT - (int) (value / 100 * HEIGHT);
-    //         int bit = x + y * WIDTH;
-    //         bitmap[bit/8] = bitmap[bit/8] | (1<<(7 - bit%8));
-    //     }
-    // } else {
-    //     float scale = (float) size / WIDTH;
-    //     for (int x = 0; x < WIDTH; x++) {     
-    //         int i = (int) (scale * x);
-    //         float value = data[i].soilTmp;
-    //         int y = HEIGHT - (int) (value / 100 * HEIGHT);
-    //         int bit = x + y * WIDTH;
-    //         bitmap[bit/8] = bitmap[bit/8] | (1<<(7 - bit%8));
-    //     }
-    // }
+    if (size > WIDTH) {
+        for (int i = 0; i < size; i++) {
+            int x = (float) i / size * WIDTH;
+            float value = data[i].soilTmp;
+            int y = HEIGHT - (int) ((value-MIN_TEMP) * HEIGHT / (MAX_TEMP-MIN_TEMP));
+            printf("Soil: Adjusted temp: %.2f. Y-value: %d\n",value - MIN_TEMP, y);
+            int bit = x + y * WIDTH;
+            bitmap[bit/8] = bitmap[bit/8] | (1<<(7 - bit%8));
+        }
+    } else {
+        float scale = (float) size / WIDTH;
+        for (int x = 0; x < WIDTH; x++) {     
+            int i = (int) (scale * x);
+            float value = data[i].soilTmp;
+            int y = HEIGHT - (int) ((value-MIN_TEMP) * HEIGHT / (MAX_TEMP-MIN_TEMP));
+            int bit = x + y * WIDTH;
+            bitmap[bit/8] = bitmap[bit/8] | (1<<(7 - bit%8));
+        }
+    }
 }
 
 void renderBitmapAirHum(Info data[], int size, uint8_t *bitmap) {

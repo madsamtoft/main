@@ -10,6 +10,8 @@
 #define WIDTH 104
 #define HEIGHT 40
 #define BITMAP_LENGTH  (WIDTH * HEIGHT) / 8
+#define MIN_TEMP (-10.0)
+#define MAX_TEMP (50.0)
 
 void renderBitmapAirTmp(Info data[], int size, uint8_t *bitmap);
 void renderBitmapSoilTmp(Info data[], int size, uint8_t *bitmap);
