@@ -84,7 +84,7 @@ int periodicRead(Info *exp, int time) { // Read and get average over a period of
         printForever(exp[i], i);
         displayExperiment(&(exp[i]), i, time);
         // Task Handling
-        vTaskDelayUntil(&delayTicks, DELAY(1000));
+        // vTaskDelayUntil(&delayTicks, DELAY(1000));
     }
     // LED's
     gpio_set_level(GPIO_LED_RED, 0);
@@ -137,14 +137,20 @@ void experimentResultsSelect(Info data[], int size) {
     // uint8_t *bitmapSoilTmp = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
     // uint8_t *bitmapAirHum = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
     // uint8_t *bitmapSoilHum = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
-    // uint8_t *bitmapLight = (uint8_t *) malloc(sizeof(uint8_t) * BITMAP_LENGTH);
-    uint8_t bitmapLight[BITMAP_LENGTH] = {0};
+    uint8_t *bitmapLight = (uint8_t *) malloc(520);
+    if (bitmapLight == NULL) {
+        printf("ERROR ALLOCATING MEMORY\n");
+        return;
+    } else {
+        printf("No error. Size of allocated memory: %d\n", sizeof(bitmapLight));
+        vTaskDelay(DELAY(1000));
+    }
 
     // bitmapAirTmp = renderBitmapAirTmp(data, size);
     // bitmapSoilTmp = renderBitmapSoilTmp(data, size);
     // bitmapAirHum = renderBitmapAirHum(data, size);
     // bitmapSoilHum = renderBitmapSoilHum(data, size);
-    renderBitmapLight(bitmapLight, data, size);
+    renderBitmapLight(data, size, bitmapLight);
 
 
 
@@ -170,7 +176,7 @@ void experimentResultsSelect(Info data[], int size) {
             // free(bitmapSoilTmp);
             // free(bitmapAirHum);
             // free(bitmapSoilHum);
-            free(bitmapLight);
+            // free(bitmapLight);
             return;
         }
         if (getSel()) {
