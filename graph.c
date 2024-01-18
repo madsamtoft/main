@@ -10,7 +10,6 @@ void renderBitmapAirTmp(Info data[], int size, uint8_t *bitmap) {
             int x = (float) i / size * WIDTH;
             float value = data[i].airTmp;
             int y = HEIGHT - (int) ((value-MIN_TEMP) * HEIGHT / (MAX_TEMP-MIN_TEMP));
-            printf("Air: Adjusted temp: %.2f. Y-value: %d\n",value - MIN_TEMP, y);
             int bit = x + y * WIDTH;
             bitmap[bit/8] = bitmap[bit/8] | (1<<(7 - bit%8));
         }
@@ -36,7 +35,6 @@ void renderBitmapSoilTmp(Info data[], int size, uint8_t *bitmap) {
             int x = (float) i / size * WIDTH;
             float value = data[i].soilTmp;
             int y = HEIGHT - (int) ((value-MIN_TEMP) * HEIGHT / (MAX_TEMP-MIN_TEMP));
-            printf("Soil: Adjusted temp: %.2f. Y-value: %d\n",value - MIN_TEMP, y);
             int bit = x + y * WIDTH;
             bitmap[bit/8] = bitmap[bit/8] | (1<<(7 - bit%8));
         }

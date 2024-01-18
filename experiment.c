@@ -196,7 +196,9 @@ void experimentResultsSelect(Info data[], int size) {
         }
         if (getSel()) {
             resetBtns();
-            clearScreen();
+            if (select >= 2 && select <= 7) {
+                clearScreen();
+            }
             select++;
             select %= 8;
             vTaskDelay(DELAY(100));
