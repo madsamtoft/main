@@ -59,10 +59,12 @@ void app_main(void) {
     xTaskCreate(melody_load_done, "melody_load_done", 1000, NULL, 1, NULL);
     vTaskDelay(DELAY(500));
     
+    // xTaskCreate(titanic, "melody_load_done", 2000, NULL, 1, NULL);
+    // displayTitanicAnimation();
+
     updateTick();
     while (1) {
         updateInfo(&current);
-        updateInfoStat(&current, &averages);
         setStatusBits(&current);
         if (displayScreen(&current)) {
             experimentSelect();
