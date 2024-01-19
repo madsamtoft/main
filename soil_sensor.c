@@ -22,3 +22,5 @@ void updateSoil(Info *soil) {
         soil -> soilTmp = -1;
     }    
 }
+
+
