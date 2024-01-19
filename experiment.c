@@ -45,6 +45,7 @@ void experimentSelect() {
             }
             free(exp);
             // Return to overview
+            select = 0;
             clearScreen();
             updateCurrentDisplay(OVERVIEW);
             updateTick();
@@ -127,6 +128,7 @@ void foreverRead() {
     // LED's
     gpio_set_level(GPIO_LED_RED, 0);
     // Titatinic animation
+    vTaskDelay(DELAY(250));
     xTaskCreate(titanic, "melody_load_done", 2000, NULL, 1, NULL);
     displayTitanicAnimation();
 }
