@@ -47,6 +47,7 @@ void experimentSelect() {
             // Return to overview
             select = 0;
             clearScreen();
+            resetBtns();
             updateCurrentDisplay(OVERVIEW);
             updateTick();
             return;
